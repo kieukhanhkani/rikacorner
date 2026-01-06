@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
@@ -44,6 +43,7 @@ h2 {
   color: #ff6f91;
   font-weight: 600;
   white-space: nowrap;
+  cursor: pointer;
 }
 .tabs button.active {
   background: #ff8fab;
@@ -72,10 +72,6 @@ h2 {
 
 .item:last-child {
   border-bottom: none;
-}
-
-.item label {
-  font-weight: normal;
 }
 
 .price {
@@ -109,38 +105,178 @@ h2 {
   opacity: 1;
   transform: scale(1);
 }
-</style>
 
+/* ===== FORM ===== */
+label.form {
+  display: block;
+  margin-top: 16px;
+  font-weight: 600;
+}
+
+input[type="tel"], textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  margin-top: 6px;
+  font-family: inherit;
+}
+
+.total-box {
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #fff0f4;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: right;
+  color: #ff3b6f;
+}
+
+button.submit {
+  margin-top: 18px;
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  background: #ff8fab;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+button.submit:hover {
+  background: #ff6f91;
+}
+</style>
 </head>
+
 <body>
 <div class="box">
 <h2>🐰 Đặt hàng nhanh</h2>
 
-<form action="https://formsubmit.co/kieukhanhkani@gmail.com" method="POST" onsubmit="return beforeSend();">
+<form action="https://formsubmit.co/kieukhanhkani@gmail.com"
+      method="POST"
+      onsubmit="return beforeSend();">
+
 <input type="hidden" name="_captcha" value="false">
 <input type="hidden" name="_subject" value="📦 ĐƠN ĐẶT HÀNG MỚI">
 <input type="hidden" name="_template" value="table">
 
+<!-- TAB -->
 <div class="tabs">
   <button type="button" class="active" onclick="showTab('new', this)">Mẫu mới</button>
   <button type="button" onclick="showTab('rolife', this)">Rolife</button>
   <button type="button" onclick="showTab('tonecheer', this)">Tonecheer</button>
-  <button type="button" onclick="showTab('cutebee', this)">CuteBee</button>
-  <button type="button" onclick="showTab('cuteroom', this)">Cuteroom</button>
   <button type="button" onclick="showTab('other', this)">Hãng khác</button>
 </div>
 
-<div id="rolife" class="products active">
+<!-- MẪU MỚI -->
+<div id="new" class="products active">
+  <div class="item">
+    <label>
+      <input type="checkbox" data-name="Mẫu mới – Vũ Khúc Sóng Biển" data-price="450000">
+      <span class="model-hover">
+        Vũ Khúc Sóng Biển
+        <img src="assets/images/vu-khuc-song-bien.webp">
+      </span>
+    </label>
+    <span class="price">450.000đ</span>
+  </div>
+</div>
+
+<!-- ROLIFE -->
+<div id="rolife" class="products">
   <div class="item">
     <label>
       <input type="checkbox" data-name="Rolife – Nhà Lẩu Gấu Trúc" data-price="790000">
-      <span class="model-hover">Nhà Lẩu Gấu Trúc<img src="assets/images/nha-lau-gau-truc.webp"></span>
+      <span class="model-hover">
+        Nhà Lẩu Gấu Trúc
+        <img src="assets/images/nha-lau-gau-truc.webp">
+      </span>
     </label>
     <span class="price">790.000đ</span>
   </div>
 </div>
 
+<!-- TONECHEER -->
+<div id="tonecheer" class="products">
+  <div class="item">
+    <label>
+      <input type="checkbox" data-name="Tonecheer – Nhịp Sống Đô Thị" data-price="450000">
+      <span class="model-hover">
+        Nhịp Sống Đô Thị
+        <img src="assets/images/nhip-song-do-thi.webp">
+      </span>
+    </label>
+    <span class="price">450.000đ</span>
+  </div>
+</div>
+
+<!-- HÃNG KHÁC -->
+<div id="other" class="products">
+  <div class="item">
+    <label>
+      <input type="checkbox" data-name="Hãng khác – Thư Quán Cà Phê" data-price="680000">
+      <span class="model-hover">
+        Thư Quán Cà Phê
+        <img src="assets/images/thu-quan-ca-phe.webp">
+      </span>
+    </label>
+    <span class="price">680.000đ</span>
+  </div>
+</div>
+
+<div class="total-box">
+  Tổng tạm tính: <span id="total">0</span>đ
+</div>
+
+<textarea id="products" name="Sản phẩm" style="display:none;"></textarea>
+<textarea id="totalInput" name="Tổng tiền" style="display:none;"></textarea>
+
+<label class="form">📞 Số điện thoại (Shop sẽ liên hệ bạn qua Zalo)</label>
+<input type="tel" name="Số điện thoại" required>
+
+<label class="form">📝 Ghi chú (ghi rõ số lượng)</label>
+<textarea name="Ghi chú"></textarea>
+
+<button class="submit">💌 Gửi đơn</button>
 </form>
 </div>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.products').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+document.addEventListener("change", updateTotal);
+
+function updateTotal() {
+  let total = 0;
+  document.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+    total += Number(cb.dataset.price);
+  });
+  document.getElementById("total").innerText = total.toLocaleString();
+}
+
+function beforeSend() {
+  const checked = document.querySelectorAll('input[type="checkbox"]:checked');
+  if (checked.length === 0) {
+    alert("Bạn chưa chọn sản phẩm nào 💛");
+    return false;
+  }
+  let lines = [];
+  let total = 0;
+  checked.forEach(cb => {
+    lines.push(cb.dataset.name);
+    total += Number(cb.dataset.price);
+  });
+  document.getElementById("products").value = lines.join("\n");
+  document.getElementById("totalInput").value = total.toLocaleString() + "đ";
+  return true;
+}
+</script>
 </body>
 </html>
