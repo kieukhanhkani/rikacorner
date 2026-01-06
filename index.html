@@ -6,6 +6,24 @@
 <title>🐰 Đặt hàng | Rika's Corner</title>
 
 <style>
+  /* Áp dụng box-sizing cho toàn trang */
+* {
+  box-sizing: border-box;
+}
+
+/* Ô số điện thoại + ghi chú */
+input[type="tel"],
+textarea {
+  width: 100%;
+  max-width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  margin-top: 6px;
+  font-family: inherit;
+  resize: vertical; /* ghi chú kéo xuống, không phá layout */
+}
+
 body {
   font-family: "Segoe UI", Arial, sans-serif;
   background: linear-gradient(135deg, #ffe6eb, #fff);
@@ -263,3 +281,4 @@ function beforeSend() {
 <script src="script.js"></script>
 </body>
 </html>
+
