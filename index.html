@@ -75,6 +75,19 @@ h2 {
   color: #fff;
 }
 
+/* ===== SORT ===== */
+.sort-bar {
+  text-align: right;
+  margin: 6px 4px 10px;
+}
+
+.sort-bar select {
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 13px;
+}
+
 /* ===== PRODUCT LIST ===== */
 .products {
   display: none;
@@ -185,6 +198,17 @@ button.submit:hover {
   <button type="button" onclick="showTab('other', this)">Hãng khác</button>
 </div>
 
+<div class="sort-bar">
+  <select id="sortSelect" onchange="sortProducts()">
+    <option value="">↕️ Sắp xếp</option>
+    <option value="name-asc">🔤 Tên A → Z</option>
+    <option value="name-desc">🔤 Tên Z → A</option>
+    <option value="price-asc">💰 Giá thấp → cao</option>
+    <option value="price-desc">💰 Giá cao → thấp</option>
+  </select>
+</div>
+
+
 <!-- MẪU MỚI -->
 <div id="new" class="products active"></div>
 
@@ -277,6 +301,11 @@ function beforeSend() {
   document.getElementById("products").value = lines.join("\n");
   document.getElementById("totalInput").value = total.toLocaleString() + "đ";
   return true;
+}
+</script>
+<script>
+function sortProducts() {
+  ...
 }
 </script>
 
