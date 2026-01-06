@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>🐰 Đặt hàng | Rika's Corner</title>
+
+<style>
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: linear-gradient(135deg, #ffe6eb, #fff);
+  margin: 0;
+}
+
+.box {
+  max-width: 680px;
+  margin: 20px auto;
+  background: #ffffff;
+  padding: 18px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+h2 {
+  text-align: center;
+  color: #ff6f91;
+  margin-bottom: 10px;
+}
+
+/* ===== TAB ===== */
+.tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+  overflow-x: auto; /* mobile nhiều tab */
+}
+.tabs button {
+  flex: 0 0 auto;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: none;
+  background: #ffd1dc;
+  color: #ff6f91;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.tabs button.active {
+  background: #ff8fab;
+  color: #fff;
+}
+
+/* ===== PRODUCT LIST ===== */
+.products {
+  display: none;
+  background: #fff7f9;
+  border-radius: 14px;
+  padding: 10px;
+}
+.products.active {
+  display: block;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px dashed #f2c2cc;
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.item label {
+  font-weight: normal;
+}
+
+.price {
+  color: #ff6f91;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+/* ===== FORM ===== */
+label.form {
+  display: block;
+  margin-top: 16px;
+  font-weight: 600;
+}
+
+input[type="tel"], textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  margin-top: 6px;
+  font-family: inherit;
+}
+
+/* ===== TOTAL ===== */
+.total-box {
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #fff0f4;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: right;
+  color: #ff3b6f;
+}
+
+/* submit */
+button.submit {
+  margin-top: 18px;
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  background: #ff8fab;
+  color: white;
+  font-size: 16px;
+}
+button.submit:hover {
+  background: #ff6f91;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+<h2>🐰 Đặt hàng nhanh</h2>
+
+<form action="https://formsubmit.co/kieukhanhkani@gmail.com"
+      method="POST"
+      onsubmit="return beforeSend();">
+
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_subject" value="📦 ĐƠN ĐẶT HÀNG MỚI">
+<input type="hidden" name="_template" value="table">
+
+<!-- TAB -->
+<div class="tabs">
+  <button type="button" class="active" onclick="showTab('new', this)">Mẫu mới</button>
+  <button type="button" onclick="showTab('rolife', this)">Rolife</button>
+  <button type="button" onclick="showTab('tonecheer', this)">Tonecheer</button>
+  <button type="button" onclick="showTab('cutebee', this)">CuteBee</button>
+  <button type="button" onclick="showTab('cuteroom', this)">Cuteroom</button>
+  <button type="button" onclick="showTab('other', this)">Hãng khác</button>
+</div>
+
+<!-- MẪU MỚI -->
+<div id="new" class="products active">
+  <!-- thêm sản phẩm mẫu mới tại đây -->
+</div>
+
+<!-- ROLIFE -->
+<div id="rolife" class="products">
+  <div class="item">
+    <label>
+      <input type="checkbox" data-name="Rolife – Nhà Lẩu Gấu Trúc" data-price="790000">
+      Nhà Lẩu Gấu Trúc
+    </label>
+    <span class="price">790.000đ</span>
+  </div>
+</div>
+
+<!-- TONECHEER -->
+<div id="tonecheer" class="products">
+  <div class="item">
+    <label>
+      <input type="checkbox" data-name="Tonecheer – Nhịp Sống Đô Thị" data-price="450000">
+      Nhịp Sống Đô Thị
+    </label>
+    <span class="price">450.000đ</span>
+  </div>
+</div>
+
+<!-- CUTEBEE -->
+<div id="cutebee" class="products">
+  <!-- thêm sản phẩm CuteBee -->
+</div>
+
+<!-- CUTEROOM -->
+<div id="cuteroom" class="products">
+  <!-- thêm sản phẩm Cuteroom -->
+</div>
+
+<!-- HÃNG KHÁC -->
+<div id="other" class="products">
+  <div class="item">
+    <label>
+      <input type="checkbox" data-name="Hãng khác – Thư Quán Cà Phê" data-price="680000">
+      Thư Quán Cà Phê
+    </label>
+    <span class="price">680.000đ</span>
+  </div>
+</div>
+
+<div class="total-box">
+  Tổng tạm tính: <span id="total">0</span>đ
+</div>
+
+<textarea id="products" name="Sản phẩm" style="display:none;"></textarea>
+<textarea id="totalInput" name="Tổng tiền" style="display:none;"></textarea>
+
+<label class="form">📞 Số điện thoại</label>
+<input type="tel"
+       name="Số điện thoại"
+       placeholder="VD: 09xxxxxxxx"
+       required>
+
+<label class="form">📝 Ghi chú (ghi rõ số lượng)</label>
+<textarea name="Ghi chú"
+  placeholder="VD: Nhà Lẩu Gấu Trúc x2, Công Viên Cổ Tích x1"></textarea>
+
+<button class="submit">💌 Gửi đơn</button>
+</form>
+</div>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.products').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+document.addEventListener("change", updateTotal);
+
+function updateTotal() {
+  let total = 0;
+  document.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+    total += Number(cb.dataset.price);
+  });
+  document.getElementById("total").innerText = total.toLocaleString();
+}
+
+function beforeSend() {
+  const checked = document.querySelectorAll('input[type="checkbox"]:checked');
+
+  if (checked.length === 0) {
+    alert("Bạn chưa chọn sản phẩm nào 💛");
+    return false;
+  }
+
+  let lines = [];
+  let total = 0;
+
+  checked.forEach(cb => {
+    lines.push(cb.dataset.name);
+    total += Number(cb.dataset.price);
+  });
+
+  document.getElementById("products").value = lines.join("\n");
+  document.getElementById("totalInput").value = total.toLocaleString() + "đ";
+
+  return true;
+}
+</script>
+<script src="script.js"></script>
+</body>
+</html>
