@@ -12,13 +12,14 @@
 </script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<h2 style="display:flex; align-items:center; justify-content:center; gap:8px;">
-  🐰 Đặt hàng nhanh
-  <span id="today-visitors"
-        style="font-size:13px; color:#999;">
-    (Hôm nay có 0 khách)
-  </span>
-</h2>
+<div style="
+  text-align:center;
+  font-size:13px;
+  color:#999;
+  margin:12px 0 4px;
+">
+  👀 Hôm nay có <span id="today-visitors">0</span> khách ghé tiệm
+</div>
 
 
 <style>
@@ -283,24 +284,27 @@ function beforeSend() {
   const today = new Date().toISOString().slice(0, 10);
   const key = "rika_visit_" + today;
 
+  const el = document.getElementById("today-visitors");
+
+  if (!el) return;
+
   if (!localStorage.getItem(key)) {
     fetch("https://api.countapi.xyz/hit/rika-corner/" + today)
       .then(res => res.json())
       .then(data => {
         localStorage.setItem(key, "1");
-        document.getElementById("today-visitors").innerText =
-          `(Hôm nay có ${data.value} khách)`;
+        el.innerText = data.value;
       });
   } else {
     fetch("https://api.countapi.xyz/get/rika-corner/" + today)
       .then(res => res.json())
       .then(data => {
-        document.getElementById("today-visitors").innerText =
-          `(Hôm nay có ${data.value} khách)`;
+        el.innerText = data.value;
       });
   }
 })();
 </script>
+
 
 </body>
 </html>
