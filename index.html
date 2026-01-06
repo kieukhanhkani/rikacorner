@@ -6,12 +6,18 @@
 <title>🐰 Đặt hàng | Rika's Corner</title>
 
 <style>
+/* ===== RESET & BOX MODEL ===== */
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: "Segoe UI", Arial, sans-serif;
   background: linear-gradient(135deg, #ffe6eb, #fff);
   margin: 0;
 }
 
+/* ===== MAIN BOX ===== */
 .box {
   max-width: 680px;
   margin: 20px auto;
@@ -32,8 +38,9 @@ h2 {
   display: flex;
   gap: 6px;
   margin-bottom: 12px;
-  overflow-x: auto; /* mobile nhiều tab */
+  overflow-x: auto;
 }
+
 .tabs button {
   flex: 0 0 auto;
   padding: 10px 12px;
@@ -43,7 +50,9 @@ h2 {
   color: #ff6f91;
   font-weight: 600;
   white-space: nowrap;
+  cursor: pointer;
 }
+
 .tabs button.active {
   background: #ff8fab;
   color: #fff;
@@ -56,6 +65,7 @@ h2 {
   border-radius: 14px;
   padding: 10px;
 }
+
 .products.active {
   display: block;
 }
@@ -73,30 +83,35 @@ h2 {
   border-bottom: none;
 }
 
-.item label {
-  font-weight: normal;
-}
-
 .price {
   color: #ff6f91;
   font-weight: bold;
   white-space: nowrap;
 }
 
-/* ===== FORM ===== */
+/* ===== FORM INPUT ===== */
 label.form {
   display: block;
   margin-top: 16px;
   font-weight: 600;
 }
 
-input[type="tel"], textarea {
+/* 🔑 FIX TRÀN LỀ */
+input[type="tel"],
+textarea {
   width: 100%;
-  padding: 10px;
+  max-width: 100%;
+  padding: 12px;
   border-radius: 10px;
   border: 1px solid #ddd;
   margin-top: 6px;
   font-family: inherit;
+  resize: vertical;
+}
+
+/* ghi chú gọn gàng hơn */
+textarea {
+  min-height: 90px;
 }
 
 /* ===== TOTAL ===== */
@@ -111,7 +126,7 @@ input[type="tel"], textarea {
   color: #ff3b6f;
 }
 
-/* submit */
+/* ===== SUBMIT ===== */
 button.submit {
   margin-top: 18px;
   width: 100%;
@@ -121,7 +136,9 @@ button.submit {
   background: #ff8fab;
   color: white;
   font-size: 16px;
+  cursor: pointer;
 }
+
 button.submit:hover {
   background: #ff6f91;
 }
@@ -152,9 +169,7 @@ button.submit:hover {
 </div>
 
 <!-- MẪU MỚI -->
-<div id="new" class="products active">
-  <!-- thêm sản phẩm mẫu mới tại đây -->
-</div>
+<div id="new" class="products active"></div>
 
 <!-- ROLIFE -->
 <div id="rolife" class="products">
@@ -178,16 +193,6 @@ button.submit:hover {
   </div>
 </div>
 
-<!-- CUTEBEE -->
-<div id="cutebee" class="products">
-  <!-- thêm sản phẩm CuteBee -->
-</div>
-
-<!-- CUTEROOM -->
-<div id="cuteroom" class="products">
-  <!-- thêm sản phẩm Cuteroom -->
-</div>
-
 <!-- HÃNG KHÁC -->
 <div id="other" class="products">
   <div class="item">
@@ -206,7 +211,7 @@ button.submit:hover {
 <textarea id="products" name="Sản phẩm" style="display:none;"></textarea>
 <textarea id="totalInput" name="Tổng tiền" style="display:none;"></textarea>
 
-<label class="form">📞 Số điện thoại (Shop sẽ liên hệ bạn qua Zalo) </label>
+<label class="form">📞 Số điện thoại (Shop sẽ liên hệ bạn qua Zalo)</label>
 <input type="tel"
        name="Số điện thoại"
        placeholder="VD: 09xxxxxxxx"
@@ -214,7 +219,7 @@ button.submit:hover {
 
 <label class="form">📝 Ghi chú (ghi rõ số lượng)</label>
 <textarea name="Ghi chú"
-  placeholder="VD: Nhà Lẩu Gấu Trúc x2, Công Viên Cổ Tích x1"></textarea>
+          placeholder="VD: Nhà Lẩu Gấu Trúc x2, Công Viên Cổ Tích x1"></textarea>
 
 <button class="submit">💌 Gửi đơn</button>
 </form>
@@ -240,7 +245,6 @@ function updateTotal() {
 
 function beforeSend() {
   const checked = document.querySelectorAll('input[type="checkbox"]:checked');
-
   if (checked.length === 0) {
     alert("Bạn chưa chọn sản phẩm nào 💛");
     return false;
@@ -248,7 +252,6 @@ function beforeSend() {
 
   let lines = [];
   let total = 0;
-
   checked.forEach(cb => {
     lines.push(cb.dataset.name);
     total += Number(cb.dataset.price);
@@ -256,10 +259,9 @@ function beforeSend() {
 
   document.getElementById("products").value = lines.join("\n");
   document.getElementById("totalInput").value = total.toLocaleString() + "đ";
-
   return true;
 }
 </script>
-<script src="script.js"></script>
+
 </body>
 </html>
