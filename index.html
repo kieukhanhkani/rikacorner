@@ -1,5 +1,31 @@
 <!DOCTYPE html>
 <html lang="vi">
+<style>
+/* ===== CLICK HIỆN THUMBNAIL SẢN PHẨM ===== */
+.model-hover {
+  position: relative;
+  cursor: pointer;
+}
+
+.model-hover img {
+  width: 80px;
+  height: auto;
+  display: none;
+  position: absolute;
+  top: 24px;
+  left: 0;
+  background: #fff;
+  padding: 4px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 10;
+}
+
+.model-hover.show img {
+  display: block;
+}
+</style>
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -261,5 +287,21 @@ function beforeSend() {
 }
 </script>
 <script src="script.js"></script>
+<script>
+document.addEventListener("click", function (e) {
+  const target = e.target.closest(".model-hover");
+
+  // đóng tất cả thumbnail đang mở
+  document.querySelectorAll(".model-hover.show").forEach(el => {
+    if (el !== target) el.classList.remove("show");
+  });
+
+  // click đúng tên sản phẩm thì toggle ảnh
+  if (target) {
+    target.classList.toggle("show");
+  }
+});
+</script>
+
 </body>
 </html>
