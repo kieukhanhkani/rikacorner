@@ -32,7 +32,7 @@ h2 {
   display: flex;
   gap: 6px;
   margin-bottom: 12px;
-  overflow-x: auto;
+  overflow-x: auto; /* mobile nhiều tab */
 }
 .tabs button {
   flex: 0 0 auto;
@@ -43,7 +43,6 @@ h2 {
   color: #ff6f91;
   font-weight: 600;
   white-space: nowrap;
-  cursor: pointer;
 }
 .tabs button.active {
   background: #ff8fab;
@@ -74,36 +73,14 @@ h2 {
   border-bottom: none;
 }
 
+.item label {
+  font-weight: normal;
+}
+
 .price {
   color: #ff6f91;
   font-weight: bold;
   white-space: nowrap;
-}
-
-/* ===== THUMBNAIL HOVER ===== */
-.model-hover {
-  position: relative;
-  cursor: help;
-  color: #5a3cff;
-}
-.model-hover img {
-  position: absolute;
-  bottom: 120%;
-  left: 0;
-  width: 140px;
-  border-radius: 10px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-  opacity: 0;
-  pointer-events: none;
-  transform: scale(0.95);
-  transition: 0.2s ease;
-  background: #fff;
-  padding: 4px;
-  z-index: 99;
-}
-.model-hover:hover img {
-  opacity: 1;
-  transform: scale(1);
 }
 
 /* ===== FORM ===== */
@@ -122,6 +99,7 @@ input[type="tel"], textarea {
   font-family: inherit;
 }
 
+/* ===== TOTAL ===== */
 .total-box {
   margin-top: 14px;
   padding: 12px;
@@ -133,6 +111,7 @@ input[type="tel"], textarea {
   color: #ff3b6f;
 }
 
+/* submit */
 button.submit {
   margin-top: 18px;
   width: 100%;
@@ -142,7 +121,6 @@ button.submit {
   background: #ff8fab;
   color: white;
   font-size: 16px;
-  cursor: pointer;
 }
 button.submit:hover {
   background: #ff6f91;
@@ -151,6 +129,7 @@ button.submit:hover {
 </head>
 
 <body>
+
 <div class="box">
 <h2>🐰 Đặt hàng nhanh</h2>
 
@@ -167,21 +146,14 @@ button.submit:hover {
   <button type="button" class="active" onclick="showTab('new', this)">Mẫu mới</button>
   <button type="button" onclick="showTab('rolife', this)">Rolife</button>
   <button type="button" onclick="showTab('tonecheer', this)">Tonecheer</button>
+  <button type="button" onclick="showTab('cutebee', this)">CuteBee</button>
+  <button type="button" onclick="showTab('cuteroom', this)">Cuteroom</button>
   <button type="button" onclick="showTab('other', this)">Hãng khác</button>
 </div>
 
 <!-- MẪU MỚI -->
 <div id="new" class="products active">
-  <div class="item">
-    <label>
-      <input type="checkbox" data-name="Mẫu mới – Vũ Khúc Sóng Biển" data-price="450000">
-      <span class="model-hover">
-        Vũ Khúc Sóng Biển
-        <img src="assets/images/vu-khuc-song-bien.webp">
-      </span>
-    </label>
-    <span class="price">450.000đ</span>
-  </div>
+  <!-- thêm sản phẩm mẫu mới tại đây -->
 </div>
 
 <!-- ROLIFE -->
@@ -189,10 +161,7 @@ button.submit:hover {
   <div class="item">
     <label>
       <input type="checkbox" data-name="Rolife – Nhà Lẩu Gấu Trúc" data-price="790000">
-      <span class="model-hover">
-        Nhà Lẩu Gấu Trúc
-        <img src="assets/images/nha-lau-gau-truc.webp">
-      </span>
+      Nhà Lẩu Gấu Trúc
     </label>
     <span class="price">790.000đ</span>
   </div>
@@ -203,13 +172,20 @@ button.submit:hover {
   <div class="item">
     <label>
       <input type="checkbox" data-name="Tonecheer – Nhịp Sống Đô Thị" data-price="450000">
-      <span class="model-hover">
-        Nhịp Sống Đô Thị
-        <img src="assets/images/nhip-song-do-thi.webp">
-      </span>
+      Nhịp Sống Đô Thị
     </label>
     <span class="price">450.000đ</span>
   </div>
+</div>
+
+<!-- CUTEBEE -->
+<div id="cutebee" class="products">
+  <!-- thêm sản phẩm CuteBee -->
+</div>
+
+<!-- CUTEROOM -->
+<div id="cuteroom" class="products">
+  <!-- thêm sản phẩm Cuteroom -->
 </div>
 
 <!-- HÃNG KHÁC -->
@@ -217,10 +193,7 @@ button.submit:hover {
   <div class="item">
     <label>
       <input type="checkbox" data-name="Hãng khác – Thư Quán Cà Phê" data-price="680000">
-      <span class="model-hover">
-        Thư Quán Cà Phê
-        <img src="assets/images/thu-quan-ca-phe.webp">
-      </span>
+      Thư Quán Cà Phê
     </label>
     <span class="price">680.000đ</span>
   </div>
@@ -233,11 +206,15 @@ button.submit:hover {
 <textarea id="products" name="Sản phẩm" style="display:none;"></textarea>
 <textarea id="totalInput" name="Tổng tiền" style="display:none;"></textarea>
 
-<label class="form">📞 Số điện thoại (Shop sẽ liên hệ bạn qua Zalo)</label>
-<input type="tel" name="Số điện thoại" required>
+<label class="form">📞 Số điện thoại (Shop sẽ liên hệ bạn qua Zalo) </label>
+<input type="tel"
+       name="Số điện thoại"
+       placeholder="VD: 09xxxxxxxx"
+       required>
 
 <label class="form">📝 Ghi chú (ghi rõ số lượng)</label>
-<textarea name="Ghi chú"></textarea>
+<textarea name="Ghi chú"
+  placeholder="VD: Nhà Lẩu Gấu Trúc x2, Công Viên Cổ Tích x1"></textarea>
 
 <button class="submit">💌 Gửi đơn</button>
 </form>
@@ -263,20 +240,26 @@ function updateTotal() {
 
 function beforeSend() {
   const checked = document.querySelectorAll('input[type="checkbox"]:checked');
+
   if (checked.length === 0) {
     alert("Bạn chưa chọn sản phẩm nào 💛");
     return false;
   }
+
   let lines = [];
   let total = 0;
+
   checked.forEach(cb => {
     lines.push(cb.dataset.name);
     total += Number(cb.dataset.price);
   });
+
   document.getElementById("products").value = lines.join("\n");
   document.getElementById("totalInput").value = total.toLocaleString() + "đ";
+
   return true;
 }
 </script>
+<script src="script.js"></script>
 </body>
 </html>
