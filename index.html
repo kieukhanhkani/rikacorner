@@ -5,8 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>🐰 Đặt hàng | Rika's Corner</title>
 <div class="visitor-note">
-  👀 Hiện đang có khách ghé thăm tiệm
+  👥 Hiện đang có <span id="onlineCount">3</span> khách <span id="onlineText">đang xem</span>
 </div>
+
 <style>
   .visitor-note {
   text-align: center;
@@ -255,8 +256,70 @@ function beforeSend() {
 }
 </script>
 <script src="script.js"></script>
+<script>
+(function () {
+  const countEl = document.getElementById("onlineCount");
+  const textEl  = document.getElementById("onlineText");
+
+  const hour = new Date().getHours();
+  let min, max;
+
+  // ===== XÁC ĐỊNH GIỜ CAO ĐIỂM =====
+  if (hour >= 20 || hour < 10) {
+    // 🔥 Cao điểm tối + sáng
+    min = 6; max = 10;
+  } else if (hour >= 11 && hour < 14) {
+    // 🔥 Cao điểm trưa
+    min = 5; max = 8;
+  } else {
+    // 🌤️ Giờ thường
+    min = 2; max = 4;
+  }
+
+  let count = Math.floor(Math.random() * (max - min + 1)) + min;
+  countEl.textContent = count;
+
+  // ===== CÂU CHỮ LUÂN PHIÊN =====
+  const texts = ["đang xem", "đang chọn mô hình"];
+  let textIndex = 0;
+
+  setInterval(() => {
+    textIndex = (textIndex + 1) % texts.length;
+    textEl.textContent = texts[textIndex];
+  }, 7000);
+
+  // ===== DAO ĐỘNG NHẸ SỐ KHÁCH =====
+  setInterval(() => {
+    let change = Math.random() > 0.6 ? 1 : -1;
+    count += change;
+    if (count < min) count = min;
+    if (count > max) count = max;
+    countEl.textContent = count;
+  }, 8000);
+
+  // ===== 🔥 TICK SẢN PHẨM → +1 =====
+  document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener("change", () => {
+      if (cb.checked) {
+        count++;
+        textEl.textContent = "đang chọn mô hình";
+      } else {
+        count--;
+        textEl.textContent = "đang xem";
+      }
+
+      if (count < min) count = min;
+      if (count > max + 2) count = max + 2;
+
+      countEl.textContent = count;
+    });
+  });
+})();
+</script>
+
 </body>
 </html>
+
 
 
 
