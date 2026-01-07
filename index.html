@@ -147,6 +147,39 @@ button.submit {
 button.submit:hover {
   background: #ff6f91;
 }
+/* ===== ICON XEM ẢNH ===== */
+.preview-btn {
+  cursor: pointer;
+  margin-left: 6px;
+  font-size: 16px;
+  opacity: 0.7;
+}
+.preview-btn:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* ===== POPUP ẢNH ===== */
+#imageModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+#imageModal img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+#imageModal.closeable {
+  cursor: zoom-out;
+}
 </style>
 </head>
 
@@ -324,7 +357,21 @@ function beforeSend() {
     });
   });
 })();
+function showImage(imgUrl) {
+  const modal = document.getElementById("imageModal");
+  const img   = document.getElementById("modalImg");
+  img.src = imgUrl;
+  modal.style.display = "flex";
+}
+
+function closeImage() {
+  document.getElementById("imageModal").style.display = "none";
+}
 </script>
+<!-- POPUP XEM ẢNH -->
+<div id="imageModal" class="closeable" onclick="closeImage()">
+  <img id="modalImg">
+</div>
 
 </body>
 </html>
