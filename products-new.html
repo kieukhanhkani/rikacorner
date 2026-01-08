@@ -1,16 +1,19 @@
 <div class="item">
-  <label>
+  <div class="left">
     <input type="checkbox"
            data-name="Tiệm bánh Jimmi"
            data-price="692000">
-    Tiệm bánh Jimmi
+
+    <span class="product-name">Tiệm bánh Jimmi</span>
 
     <span class="preview-btn"
-          onclick="showImage('assets/images/Tiệm bánh Jimmi.jpg')">🔍</span>
-  </label>
+          onclick="event.stopPropagation(); showImage('assets/images/Tiệm bánh Jimmi.jpg')">
+      🔍
+    </span>
+  </div>
+
   <span class="price">692.000đ</span>
 </div>
-
 
 <div class="item">
   <label>
@@ -106,6 +109,7 @@
   </label>
   <span class="price">1.153.200đ</span>
 </div>
+
 
 
 
