@@ -127,12 +127,20 @@
 </div>
 
 <div class="item">
-  <label>
+  <div class="left">
     <input type="checkbox"
+           id="the-bear-story"
            data-name="The Bear Story"
            data-price="780000">
-    The Bear Story
-  </label>
+
+    <span class="product-name">The Bear Story</span>
+
+    <span class="preview-btn"
+          onclick="event.stopPropagation(); showImage('assets/images/the-bear-story.jpg')">
+      🔍
+    </span>
+  </div>
+
   <span class="price">780.000đ</span>
 </div>
 
@@ -185,5 +193,6 @@
   </label>
   <span class="price">658.000đ</span>
 </div>
+
 
 
