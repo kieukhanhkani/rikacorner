@@ -97,12 +97,20 @@
 </div>
 
 <div class="item">
-  <label>
+  <div class="left">
     <input type="checkbox"
+           id="moon-magic"
            data-name="Moon Magic"
            data-price="180000">
-    Moon Magic
-  </label>
+
+    <span class="product-name">Moon Magic</span>
+
+    <span class="preview-btn"
+          onclick="event.stopPropagation(); showImage('assets/images/moon-magic.jpg')">
+      🔍
+    </span>
+  </div>
+
   <span class="price">180.000đ</span>
 </div>
 
@@ -201,6 +209,7 @@
   </label>
   <span class="price">658.000đ</span>
 </div>
+
 
 
 
