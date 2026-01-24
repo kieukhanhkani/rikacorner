@@ -87,12 +87,20 @@
 </div>
 
 <div class="item">
-  <label>
+  <div class="left">
     <input type="checkbox"
+           id="magic-wand"
            data-name="Magic Wand"
            data-price="502000">
-    Magic Wand
-  </label>
+
+    <span class="product-name">Magic Wand</span>
+
+    <span class="preview-btn"
+          onclick="event.stopPropagation(); showImage('assets/images/magic-wand.jpg')">
+      🔍
+    </span>
+  </div>
+
   <span class="price">502.000đ</span>
 </div>
 
@@ -349,5 +357,6 @@
   </label>
   <span class="price">452.000đ</span>
 </div>
+
 
 
