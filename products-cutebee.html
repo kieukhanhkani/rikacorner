@@ -263,12 +263,20 @@
 </div>
 
 <div class="item">
-  <label>
+  <div class="left">
     <input type="checkbox"
+           id="sunny-cafe"
            data-name="Sunny Cafe"
            data-price="504000">
-    Sunny Cafe
-  </label>
+
+    <span class="product-name">Sunny Cafe</span>
+
+    <span class="preview-btn"
+          onclick="event.stopPropagation(); showImage('assets/images/sunny-cafe.jpg')">
+      🔍
+    </span>
+  </div>
+
   <span class="price">504.000đ</span>
 </div>
 
@@ -485,6 +493,7 @@
   </label>
   <span class="price">452.000đ</span>
 </div>
+
 
 
 
