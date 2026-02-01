@@ -1,10 +1,18 @@
 <div class="item">
-  <label>
+  <div class="left">
     <input type="checkbox"
+           id="cửa-hàng-nông-sản"
            data-name=" Cửa Hàng Nông Sản"
            data-price="504000">
-     Cửa Hàng Nông Sản
-  </label>
+
+    <span class="product-name"> Cửa Hàng Nông Sản</span>
+
+    <span class="preview-btn"
+          onclick="event.stopPropagation(); showImage('assets/images/cua-hang-nong-san.jpg')">
+      🔍
+    </span>
+  </div>
+
   <span class="price">504.000đ</span>
 </div>
 
@@ -353,12 +361,20 @@
 </div>
 
 <div class="item">
-  <label>
+  <div class="left">
     <input type="checkbox"
+           id="tiệm-bánh-mary"
            data-name="Tiệm Bánh Mary"
            data-price="504000">
-    Tiệm Bánh Mary
-  </label>
+
+    <span class="product-name">Tiệm Bánh Mary</span>
+
+    <span class="preview-btn"
+          onclick="event.stopPropagation(); showImage('assets/images/tiem-banh-mary.jpg')">
+      🔍
+    </span>
+  </div>
+
   <span class="price">504.000đ</span>
 </div>
 
@@ -493,6 +509,7 @@
   </label>
   <span class="price">452.000đ</span>
 </div>
+
 
 
 
