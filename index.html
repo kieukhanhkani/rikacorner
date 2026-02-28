@@ -263,19 +263,6 @@ button.submit:hover {
 </form>
 </div>
 
-  let lines = [];
-  let total = 0;
-
-  checked.forEach(cb => {
-    lines.push(cb.dataset.name);
-    total += Number(cb.dataset.price);
-  });
-
-  document.getElementById("products").value = lines.join("\n");
-  document.getElementById("totalInput").value = total.toLocaleString() + "đ";
-
-  return true;
-}
 </script>
 <script src="script.js"></script>
 <script>
@@ -355,6 +342,7 @@ function closeImage() {
 
 </body>
 </html>
+
 
 
 
