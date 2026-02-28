@@ -263,24 +263,6 @@ button.submit:hover {
 </form>
 </div>
 
-document.addEventListener("change", updateTotal);
-
-function updateTotal() {
-  let total = 0;
-  document.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
-    total += Number(cb.dataset.price);
-  });
-  document.getElementById("total").innerText = total.toLocaleString();
-}
-
-function beforeSend() {
-  const checked = document.querySelectorAll('input[type="checkbox"]:checked');
-
-  if (checked.length === 0) {
-    alert("Bạn chưa chọn sản phẩm nào 💛");
-    return false;
-  }
-
   let lines = [];
   let total = 0;
 
@@ -373,6 +355,7 @@ function closeImage() {
 
 </body>
 </html>
+
 
 
 
