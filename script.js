@@ -5,6 +5,7 @@ const TAB_FILES = {
   tonecheer: "products-tonecheer.html",
   cutebee: "products-cutebee.html",
   cuteroom: "products-cuteroom.html",
+  greathouse: "products-greathouse.html",
   other: "products-other.html"
 };
 
@@ -100,3 +101,4 @@ document.addEventListener("change", updateTotal);
 document.addEventListener("DOMContentLoaded", () => {
   loadTab("new");
 });
+
