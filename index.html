@@ -1,11 +1,21 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
- <meta charset="UTF-8">
+  <!-- Google Analytics GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R6HV1BGPR5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-R6HV1BGPR5');
+</script>
+
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>🐰 Đặt hàng | Rika's Corner</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji" rel="stylesheet">
+<div class="visitor-note">
+  👥 Hiện đang có <span id="onlineCount">3</span> khách <span id="onlineText">đang xem</span>
+</div>
 
 <style>
   .visitor-note {
@@ -17,20 +27,13 @@
   padding: 6px 10px;
   border-radius: 999px;
 }
-.product-name{
-  font-family: "Segoe UI Emoji","Segoe UI Symbol","Segoe UI",Arial,sans-serif;
+
+  body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: linear-gradient(135deg, #ffe6eb, #fff);
+  margin: 0;
 }
-  
-body {
-  font-family:
-  "Segoe UI Emoji",
-  "Noto Color Emoji",
-  "Apple Color Emoji",
-  "Segoe UI Symbol",
-  "Segoe UI",
-  Arial,
-  sans-serif;
-}
+
 .box {
   max-width: 680px;
   margin: 20px auto;
@@ -177,17 +180,11 @@ button.submit:hover {
 #imageModal.closeable {
   cursor: zoom-out;
 }
-  .product-name{
-  font-family: "Segoe UI Emoji","Segoe UI Symbol","Segoe UI",Arial,sans-serif;
-}
 </style>
 </head>
 
 <body>
-<div class="visitor-note">
-  👥 Hiện đang có <span id="onlineCount">3</span> khách
-  <span id="onlineText">đang xem</span>
-</div>
+
 <div class="box">
 <h2>🐰 Đặt hàng nhanh</h2>
 
@@ -262,9 +259,9 @@ button.submit:hover {
 <textarea name="Ghi chú"
   placeholder="VD: Nhà Lẩu Gấu Trúc x2, Công Viên Cổ Tích x1"></textarea>
 <div class="note-line">
-  <span>🔨 Ghép gỗ</span>
-  <span>🎶 Có nhạc</span>
+  🔨 Ghép gỗ.      🎶 Có nhạc
 </div>
+
 <button class="submit">💌 Gửi đơn</button>
 </form>
 </div>
@@ -348,25 +345,3 @@ function closeImage() {
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
