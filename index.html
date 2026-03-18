@@ -359,9 +359,14 @@ function updatePrices() {
   });
 }
 
-// đợi load xong sản phẩm rồi mới chạy
-setTimeout(updatePrices, 500);
-</script>
+// theo dõi khi có sản phẩm mới được thêm vào
+const observer = new MutationObserver(() => {
+  updatePrices();
+});
 
-</body>
-</html>
+// theo dõi toàn bộ body
+observer.observe(document.body, {
+  childList: true,
+  subtree: true
+});
+</script>
