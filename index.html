@@ -343,6 +343,25 @@ function closeImage() {
   <img id="modalImg">
 </div>
 
+<script>
+function updatePrices() {
+  document.querySelectorAll('.item').forEach(item => {
+    let priceElement = item.querySelector('.price');
+    let input = item.querySelector('input');
+
+    if (!input || !priceElement) return;
+
+    let oldPrice = parseInt(input.dataset.price);
+    let newPrice = Math.round(oldPrice * 1.025);
+
+    input.dataset.price = newPrice;
+    priceElement.textContent = newPrice.toLocaleString('vi-VN') + 'đ';
+  });
+}
+
+// đợi load xong sản phẩm rồi mới chạy
+setTimeout(updatePrices, 500);
+</script>
+
 </body>
 </html>
-
