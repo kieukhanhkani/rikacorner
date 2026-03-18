@@ -351,20 +351,25 @@ function updatePrices() {
 
     if (!input || !priceElement) return;
 
+    // ❗ tránh update lại nhiều lần
+    if (input.dataset.updated) return;
+
     let oldPrice = parseInt(input.dataset.price);
     let newPrice = Math.round(oldPrice * 1.025);
 
     input.dataset.price = newPrice;
     priceElement.textContent = newPrice.toLocaleString('vi-VN') + 'đ';
+
+    // đánh dấu đã update
+    input.dataset.updated = "true";
   });
 }
 
-// theo dõi khi có sản phẩm mới được thêm vào
+// observer
 const observer = new MutationObserver(() => {
   updatePrices();
 });
 
-// theo dõi toàn bộ body
 observer.observe(document.body, {
   childList: true,
   subtree: true
