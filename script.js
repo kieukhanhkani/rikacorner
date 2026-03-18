@@ -47,8 +47,11 @@ function showTab(id, btn) {
   tab.classList.add("active");
   btn.classList.add("active");
 
-  // load sản phẩm cho tab đó
+  // load sản phẩm
   loadTab(id);
+
+  // 🔥 THÊM Ở ĐÂY (quan trọng)
+  setTimeout(updatePrices, 200);
 }
 
 /* ===== TOTAL PRICE ===== */
