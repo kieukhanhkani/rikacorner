@@ -279,7 +279,7 @@ function updatePrices() {
     if (input.dataset.updated) return;
 
     let oldPrice = parseInt(input.dataset.price);
-    let newPrice = Math.round(oldPrice * 1.025);
+    let newPrice = Math.round(oldPrice * 1);
 
     input.dataset.price = newPrice;
     priceElement.textContent = newPrice.toLocaleString('vi-VN') + 'đ';
@@ -379,7 +379,7 @@ function updatePrices() {
     if (input.dataset.updated) return;
 
     let oldPrice = parseInt(input.dataset.price);
-    let newPrice = Math.round(oldPrice * 1.025);
+    let newPrice = Math.round(oldPrice * 1);
 
     input.dataset.price = newPrice;
     priceElement.textContent = newPrice.toLocaleString('vi-VN') + 'đ';
