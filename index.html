@@ -268,30 +268,6 @@ button.submit:hover {
 
 </script>
 <script src="script.js"></script>
-
-<script>
-function updatePrices() {
-  document.querySelectorAll('.item').forEach(item => {
-    let priceElement = item.querySelector('.price');
-    let input = item.querySelector('input');
-
-    if (!input || !priceElement) return;
-    if (input.dataset.updated) return;
-
-    let oldPrice = parseInt(input.dataset.price);
-    let newPrice = Math.round(oldPrice * 1.025);
-
-    input.dataset.price = newPrice;
-    priceElement.textContent = newPrice.toLocaleString('vi-VN') + 'đ';
-
-    input.dataset.updated = "true";
-  });
-}
-
-// chạy lần đầu
-setTimeout(updatePrices, 500);
-</script>
-
 <script>
 (function () {
   const countEl = document.getElementById("onlineCount");
@@ -367,35 +343,6 @@ function closeImage() {
   <img id="modalImg">
 </div>
 
-<script>
-function updatePrices() {
-  document.querySelectorAll('.item').forEach(item => {
-    let priceElement = item.querySelector('.price');
-    let input = item.querySelector('input');
+</body>
+</html>
 
-    if (!input || !priceElement) return;
-
-    // ❗ tránh update lại nhiều lần
-    if (input.dataset.updated) return;
-
-    let oldPrice = parseInt(input.dataset.price);
-    let newPrice = Math.round(oldPrice * 1.025);
-
-    input.dataset.price = newPrice;
-    priceElement.textContent = newPrice.toLocaleString('vi-VN') + 'đ';
-
-    // đánh dấu đã update
-    input.dataset.updated = "true";
-  });
-}
-
-// observer
-const observer = new MutationObserver(() => {
-  updatePrices();
-});
-
-observer.observe(document.body, {
-  childList: true,
-  subtree: true
-});
-</script>
