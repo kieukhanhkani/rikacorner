@@ -189,21 +189,17 @@ button.submit:hover {
 <h2>🐰 Đặt hàng nhanh</h2>
 
 <form action="https://api.web3forms.com/submit" method="POST">
+
   <input type="hidden" name="access_key" value="072c21b9-80cc-46cb-9dcb-9ba456e44f9f">
-  
+  <input type="hidden" name="email" value="kieukhanhkani@gmail.com">
   <input type="hidden" name="subject" value="ĐƠN ĐẶT HÀNG MỚI">
   <input type="hidden" name="from_name" value="Rika Corner">
 
-  <input type="text" name="phone" placeholder="Số điện thoại" required>
-  
-  <input type="number" name="quantity" placeholder="Số lượng" required min="1">
+  <input type="tel" name="phone" placeholder="Nhập số điện thoại" required>
 
-  <button type="submit">Đặt hàng</button>
+  <button type="submit">Gửi đơn</button>
+
 </form>
-
-<input type="hidden" name="_captcha" value="false">
-<input type="hidden" name="_subject" value="📦 ĐƠN ĐẶT HÀNG MỚI">
-<input type="hidden" name="_template" value="table">
 
 <!-- TAB -->
 <div class="tabs">
