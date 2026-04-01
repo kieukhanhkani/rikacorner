@@ -188,20 +188,6 @@ button.submit:hover {
 <div class="box">
 <h2>🐰 Đặt hàng nhanh</h2>
 
-<form action="https://api.web3forms.com/submit" method="POST" onsubmit="return beforeSend()">
-
-  <input type="hidden" name="access_key" value="072c21b9-80cc-46cb-9dcb-9ba456e44f9f">
-  <input type="hidden" name="email" value="kieukhanhkani@gmail.com">
-  <input type="hidden" name="subject" value="ĐƠN ĐẶT HÀNG MỚI">
-  <input type="hidden" name="from_name" value="Rika Corner">
-  <textarea id="products" name="Sản phẩm" style="display:none;"></textarea>
-  <textarea id="totalInput" name="Tổng tiền" style="display:none;"></textarea>
-  <input type="tel" name="phone" placeholder="Nhập số điện thoại" required>
-
-  <button type="submit">Gửi đơn</button>
-
-</form>
-
 <!-- TAB -->
 <div class="tabs">
   <button type="button" class="active" onclick="showTab('new', this)">Mẫu mới</button>
@@ -252,25 +238,29 @@ button.submit:hover {
   Tổng tạm tính: <span id="total">0</span>đ
 </div>
 
-<textarea id="products" name="Sản phẩm" style="display:none;"></textarea>
-<textarea id="totalInput" name="Tổng tiền" style="display:none;"></textarea>
+<form action="https://api.web3forms.com/submit" method="POST" onsubmit="return beforeSend()">
 
-<label class="form">📞 Số điện thoại (Shop sẽ liên hệ bạn qua Zalo) </label>
-<input type="tel"
-       name="Số điện thoại"
-       placeholder="VD: 09xxxxxxxx"
-       required>
+  <input type="hidden" name="access_key" value="072c21b9-80cc-46cb-9dcb-9ba456e44f9f">
+  <input type="hidden" name="email" value="kieukhankani@gmail.com">
+  <input type="hidden" name="subject" value="ĐƠN ĐẶT HÀNG MỚI">
+  <input type="hidden" name="from_name" value="Rika Corner">
 
-<label class="form">📝 Ghi chú (ghi rõ số lượng)</label>
-<textarea name="Ghi chú"
-  placeholder="VD: Nhà Lẩu Gấu Trúc x2, Công Viên Cổ Tích x1"></textarea>
-<div class="note-line">
-  🔨 Ghép gỗ.      🎶 Có nhạc ⚙️ Chuyển động
+  <textarea id="products" name="Sản phẩm" style="display:none;"></textarea>
+  <textarea id="totalInput" name="Tổng tiền" style="display:none;"></textarea>
+
+  <label class="form">📞 Số điện thoại</label>
+  <input type="tel" name="Số điện thoại" required>
+
+  <label class="form">📝 Ghi chú</label>
+  <textarea name="Ghi chú"></textarea>
+  <div class="note-line">
+  🔨 Ghép gỗ. 🎶 Có nhạc ⚙️ Chuyển động
 </div>
+  <button class="submit">💌 Gửi đơn</button>
 
-<button class="submit">💌 Gửi đơn</button>
 </form>
-</div>
+
+</div> 
 
 </script>
 <script src="script.js"></script>
