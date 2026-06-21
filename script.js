@@ -95,6 +95,15 @@ function beforeSend() {
   if (totalInput) totalInput.value = total.toLocaleString("vi-VN") + "đ";
 
   return true;
+  function showBrand() {
+  const selected = document.getElementById("brandSelect").value;
+
+  document.querySelectorAll(".products").forEach(div => {
+    div.classList.remove("active");
+  });
+
+  document.getElementById(selected).classList.add("active");
+}
 }
 
 /* ===== EVENT ===== */
