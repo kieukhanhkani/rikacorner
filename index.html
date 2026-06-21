@@ -199,6 +199,18 @@ button.submit:hover {
   width: 140px;
   border-radius: 12px;
 }
+.brand-filter {
+  margin-bottom: 12px;
+}
+
+.brand-filter select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #ffd1dc;
+  background: white;
+  font-size: 15px;
+}
 </style>
 </head>
 
@@ -208,14 +220,16 @@ button.submit:hover {
 <h2>🐰 Đặt hàng nhanh</h2>
 
 <!-- TAB -->
-<div class="tabs">
-  <button type="button" class="active" onclick="showTab('new', this)">Mẫu mới</button>
-  <button type="button" onclick="showTab('rolife', this)">Rolife</button>
-  <button type="button" onclick="showTab('tonecheer', this)">Tonecheer</button>
-  <button type="button" onclick="showTab('cutebee', this)">CuteBee</button>
-  <button type="button" onclick="showTab('cuteroom', this)">Cuteroom</button>
-  <button type="button" onclick="showTab('greathouse', this)">GreatHouse</button>
-  <button type="button" onclick="showTab('other', this)">Hãng khác</button>
+<div class="brand-filter">
+  <select id="brandSelect" onchange="showBrand()">
+    <option value="new">🔥 Mẫu mới</option>
+    <option value="rolife">Rolife</option>
+    <option value="tonecheer">Tonecheer</option>
+    <option value="cutebee">CuteBee</option>
+    <option value="cuteroom">Cuteroom</option>
+    <option value="greathouse">GreatHouse</option>
+    <option value="other">Hãng khác</option>
+  </select>
 </div>
 
 <!-- MẪU MỚI -->
