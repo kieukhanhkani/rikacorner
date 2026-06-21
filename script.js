@@ -98,13 +98,21 @@ function beforeSend() {
 
   return true;
   function showBrand() {
-  const selected = document.getElementById("brandSelect").value;
+  const selected =
+      document.getElementById("brandSelect").value;
 
-  document.querySelectorAll(".products").forEach(div => {
-    div.classList.remove("active");
-  });
+  document.querySelectorAll(".products")
+    .forEach(div => div.classList.remove("active"));
 
-  document.getElementById(selected).classList.add("active");
+  const container =
+      document.getElementById(selected);
+
+  if (!container) return;
+
+  container.classList.add("active");
+
+  // tải file html của hãng
+  loadTab(selected);
 }
 }
 
