@@ -1,12 +1,24 @@
 /* ===== MAP TAB -> FILE ===== */
 const TAB_FILES = {
   new: "products-new.html",
+
   rolife: "products-rolife.html",
   tonecheer: "products-tonecheer.html",
   cutebee: "products-cutebee.html",
   cuteroom: "products-cuteroom.html",
   greathouse: "products-greathouse.html",
   jifangshiguang: "products-jifangshiguang.html",
+
+  aslowsnail: "products-aslowsnail.html",
+  fifijoy: "products-fifijoy.html",
+  hongda: "products-hongda.html",
+  rokr: "products-rokr.html",
+  ytop: "products-ytop.html",
+  tianyu: "products-tianyu.html",
+  qiaoyun: "products-qiaoyun.html",
+  xinyue: "products-xinyue.html",
+  maotiankong: "products-maotiankong.html",
+  zhiwo: "products-zhiwo.html",
 
   other: "products-other.html"
 };
