@@ -97,7 +97,8 @@ function beforeSend() {
   if (totalInput) totalInput.value = total.toLocaleString("vi-VN") + "đ";
 
   return true;
-  function showBrand() {
+}
+function showBrand() {
   const selected =
       document.getElementById("brandSelect").value;
 
@@ -111,11 +112,8 @@ function beforeSend() {
 
   container.classList.add("active");
 
-  // tải file html của hãng
   loadTab(selected);
 }
-}
-
 /* ===== EVENT ===== */
 document.addEventListener("change", updateTotal);
 
