@@ -22,6 +22,34 @@ const TAB_FILES = {
 
   other: "products-other.html"
 };
+/* ===== SORT ABC ===== */
+function sortProducts(container) {
+  const items = Array.from(
+    container.querySelectorAll(".item")
+  );
+
+  items.sort((a, b) => {
+
+    const inputA = a.querySelector("input");
+    const inputB = b.querySelector("input");
+
+    const nameA = (
+      inputA?.dataset.name ||
+      a.textContent
+    ).trim();
+
+    const nameB = (
+      inputB?.dataset.name ||
+      b.textContent
+    ).trim();
+
+    return nameA.localeCompare(nameB, "vi");
+  });
+
+  items.forEach(item => {
+    container.appendChild(item);
+  });
+}
 
 /* ===== LOAD CONTENT CHO TAB ===== */
 async function loadTab(tabId) {
@@ -40,6 +68,8 @@ async function loadTab(tabId) {
 
     const html = await res.text();
     container.innerHTML = html;
+    /* Sắp xếp ABC */
+    sortProducts(container);
     container.dataset.loaded = "true";
   } catch (err) {
     container.innerHTML =
