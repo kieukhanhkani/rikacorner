@@ -1,14 +1,12 @@
 /* ===== MAP TAB -> FILE ===== */
 const TAB_FILES = {
   new: "products-new.html",
-
   rolife: "products-rolife.html",
   tonecheer: "products-tonecheer.html",
   cutebee: "products-cutebee.html",
   cuteroom: "products-cuteroom.html",
   greathouse: "products-greathouse.html",
   jifangshiguang: "products-jifangshiguang.html",
-
   aslowsnail: "products-aslowsnail.html",
   fifijoy: "products-fifijoy.html",
   hongda: "products-hongda.html",
@@ -19,7 +17,6 @@ const TAB_FILES = {
   xinyue: "products-xinyue.html",
   maotiankong: "products-maotiankong.html",
   zhiwo: "products-zhiwo.html",
-
   other: "products-other.html"
 };
 /* ===== SORT ABC ===== */
