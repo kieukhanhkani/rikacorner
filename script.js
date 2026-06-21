@@ -6,6 +6,8 @@ const TAB_FILES = {
   cutebee: "products-cutebee.html",
   cuteroom: "products-cuteroom.html",
   greathouse: "products-greathouse.html",
+  jifangshiguang: "products-jifangshiguang.html",
+
   other: "products-other.html"
 };
 
