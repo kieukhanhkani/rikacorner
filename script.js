@@ -20,24 +20,30 @@ const PRODUCT_FILES = [
   "products-other.html"
 ];
 
-const VIETNAMESE_ALPHABET = ["A", "Ă", "Â", "B", "C", "D", "Đ", "E", "Ê", "G", "H", "I", "K", "L", "M", "N", "O", "Ô", "Ơ", "P", "Q", "R", "S", "T", "U", "Ư", "V", "X", "Y"];
+const VIETNAMESE_ALPHABET = ["A", "B", "C", "D", "Đ", "E", "G", "H", "I", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y"];
 let allAlphabetItems = [];
 let alphabetLoaded = false;
 let activeLetter = null;
 let activeSearchQuery = "";
 
 function getProductName(item) {
+  // Ưu tiên data-name nếu có, nhưng loại bỏ emoji/ký hiệu đứng đầu tên.
   const input = item.querySelector("input");
-  return (input?.dataset.name || item.textContent || "").trim();
+  const label = item.querySelector("label");
+  let name = (input?.dataset.name || label?.textContent || item.textContent || "").trim();
+  // Bỏ các emoji/ký hiệu trang trí ở đầu để tìm theo tên mô hình thật.
+  name = name.replace(/^[\s\p{Extended_Pictographic}\p{Emoji_Presentation}\p{S}\p{P}]+/u, "").trim();
+  return name;
 }
 
 function getInitial(name) {
-  const first = (name || "").trim().charAt(0).toLocaleUpperCase("vi-VN");
+  // Bỏ emoji/ký hiệu trước khi lấy chữ cái đầu của tên mô hình.
+  const clean = (name || "").trim().replace(/^[\s\p{Extended_Pictographic}\p{Emoji_Presentation}\p{S}\p{P}]+/u, "");
+  const first = Array.from(clean)[0]?.toLocaleUpperCase("vi-VN") || "";
   if (!first) return "";
-  // Gom các nguyên âm có dấu về chữ cái gốc để khách dễ tìm: Á/Ă/Â -> A, Ế/Ê -> E...
+  // Gom A/Ă/Â về A, E/Ê về E, O/Ô/Ơ về O, U/Ư về U để khách dễ tìm.
   if (first === "Đ") return "Đ";
-  const normalized = first.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  return normalized;
+  return first.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
 function sortProducts(container) {
