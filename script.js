@@ -96,18 +96,35 @@ async function loadAlphabetProducts() {
 
   // Chỉ hiện chữ cái có sản phẩm, theo thứ tự bảng chữ cái tiếng Việt.
   const letters = VIETNAMESE_ALPHABET.filter(letter => available.has(letter));
-  select.innerHTML = '<option value="new">🔥 Mẫu mới</option>';
-  const group = document.createElement("optgroup");
-  group.label = "Tìm theo chữ cái đầu";
-  letters.forEach(letter => {
-    const option = document.createElement("option");
-    option.value = `letter-${letter}`;
-    option.textContent = letter;
-    group.appendChild(option);
-  });
-  select.appendChild(group);
-  select.insertAdjacentHTML("beforeend", '<option value="all">📚 Tất cả sản phẩm</option>');
+  // Tạo các nút ABC trực tiếp trên giao diện, chỉ với chữ có sản phẩm.
+  const nav = document.getElementById("alphabetNav");
+  if (nav) {
+    nav.innerHTML = "";
+    letters.forEach(letter => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "letter-btn";
+      button.textContent = letter;
+      button.setAttribute("aria-label", `Lọc mô hình bắt đầu bằng chữ ${letter}`);
+      button.addEventListener("click", () => {
+        activeLetter = letter;
+        activeSearchQuery = "";
+        const searchInput = document.getElementById("productSearch");
+        if (searchInput) searchInput.value = "";
+        document.getElementById("new")?.classList.remove("active");
+        document.getElementById("alphabet")?.classList.add("active");
+        document.getElementById("newCategory")?.classList.remove("active");
+        document.getElementById("allCategory")?.classList.remove("active");
+        nav.querySelectorAll(".letter-btn").forEach(btn => btn.classList.toggle("active", btn === button));
+        applyProductFilters();
+      });
+      nav.appendChild(button);
+    });
+  }
 
+  if (select) {
+    select.innerHTML = '<option value="new">🔥 Mẫu mới</option><option value="all">📚 Tất cả sản phẩm</option>';
+  }
   alphabetLoaded = true;
   container.dataset.loaded = "true";
   filterAlphabetProducts("all");
@@ -152,7 +169,7 @@ function applyProductFilters() {
 }
 
 function filterAlphabetProducts(selection) {
-  activeLetter = selection.startsWith("letter-") ? selection.slice(7) : null;
+  activeLetter = selection && selection.startsWith("letter-") ? selection.slice(7) : null;
   activeSearchQuery = "";
   const searchInput = document.getElementById("productSearch");
   if (searchInput) searchInput.value = "";
@@ -170,16 +187,31 @@ function searchProducts() {
   loadAlphabetProducts().then(() => applyProductFilters());
 }
 
-function showBrand() {
-  const selected = document.getElementById("brandSelect").value;
+function showBrand(selection) {
+  const selected = selection || document.getElementById("brandSelect")?.value || "new";
+  document.getElementById("newCategory")?.classList.toggle("active", selected === "new");
+  document.getElementById("allCategory")?.classList.toggle("active", selected !== "new");
   document.querySelectorAll(".products").forEach(div => div.classList.remove("active"));
+  document.getElementById("alphabetNav")?.querySelectorAll(".letter-btn").forEach(btn => btn.classList.remove("active"));
+
   if (selected === "new") {
     document.getElementById("new")?.classList.add("active");
+    activeLetter = null;
+    activeSearchQuery = "";
+    const searchInput = document.getElementById("productSearch");
+    if (searchInput) searchInput.value = "";
     loadNewProducts();
+    applyProductFilters();
     return;
   }
   document.getElementById("alphabet")?.classList.add("active");
-  loadAlphabetProducts().then(() => filterAlphabetProducts(selected));
+  loadAlphabetProducts().then(() => {
+    activeLetter = null;
+    activeSearchQuery = "";
+    const searchInput = document.getElementById("productSearch");
+    if (searchInput) searchInput.value = "";
+    applyProductFilters();
+  });
 }
 
 function updateTotal() {

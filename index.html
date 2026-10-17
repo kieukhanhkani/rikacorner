@@ -211,6 +211,50 @@ button.submit:hover {
   background: white;
   font-size: 15px;
 }
+.category-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.category-btn {
+  flex: 1;
+  padding: 11px 8px;
+  border: 1px solid #ffd1dc;
+  border-radius: 10px;
+  background: #fff;
+  color: #d94f78;
+  font-weight: 600;
+  cursor: pointer;
+}
+.category-btn.active {
+  background: #ff8fab;
+  border-color: #ff8fab;
+  color: #fff;
+}
+.alphabet-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.letter-btn {
+  min-width: 36px;
+  padding: 8px 10px;
+  border: 1px solid #ffd1dc;
+  border-radius: 9px;
+  background: #fff;
+  color: #d94f78;
+  font-weight: 700;
+  cursor: pointer;
+}
+.letter-btn.active, .letter-btn:hover {
+  background: #ff8fab;
+  border-color: #ff8fab;
+  color: #fff;
+}
+.letter-btn:disabled {
+  display: none;
+}
 .search-row {
   display: flex;
   gap: 8px;
@@ -245,11 +289,12 @@ button.submit:hover {
 
 <!-- TAB -->
 <div class="brand-filter">
-  <select id="brandSelect" onchange="showBrand()">
-    <option value="new">🔥 Mẫu mới</option>
-    <option value="alphabet">🔤 Tất cả sản phẩm (đang tải...)</option>
-  </select>
-  <p style="margin:8px 2px 0;color:#a66;font-size:13px;">Chọn chữ cái đầu tên mô hình để tìm nhanh. Chỉ hiện chữ có sản phẩm.</p>
+  <div class="category-row">
+    <button type="button" class="category-btn active" id="newCategory" onclick="showBrand('new')">🔥 Mẫu mới</button>
+    <button type="button" class="category-btn" id="allCategory" onclick="showBrand('all')">📚 Tất cả sản phẩm</button>
+  </div>
+  <p style="margin:8px 2px;color:#a66;font-size:13px;">🔤 Chọn chữ cái đầu tên mô hình để tìm nhanh:</p>
+  <div id="alphabetNav" class="alphabet-nav" aria-label="Lọc sản phẩm theo chữ cái"></div>
   <div class="search-row">
     <input id="productSearch" type="search" placeholder="🔎 Nhập tên mô hình cần tìm..." aria-label="Tìm sản phẩm">
     <button type="button" id="searchButton">Tìm kiếm</button>
