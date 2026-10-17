@@ -1,163 +1,228 @@
-/* ===== MAP TAB -> FILE ===== */
-const TAB_FILES = {
-  new: "products-new.html",
-  rolife: "products-rolife.html",
-  tonecheer: "products-tonecheer.html",
-  cutebee: "products-cutebee.html",
-  cuteroom: "products-cuteroom.html",
-  greathouse: "products-greathouse.html",
-  jifangshiguang: "products-jifangshiguang.html",
-  aslowsnail: "products-aslowsnail.html",
-  fifijoy: "products-fifijoy.html",
-  hongda: "products-hongda.html",
-  rokr: "products-rokr.html",
-  ytop: "products-ytop.html",
-  tianyu: "products-tianyu.html",
-  qiaoyun: "products-qiaoyun.html",
-  xinyue: "products-xinyue.html",
-  maotiankong: "products-maotiankong.html",
-  zhiwo: "products-zhiwo.html",
-  other: "products-other.html"
-};
-/* ===== SORT ABC ===== */
-function sortProducts(container) {
-  const items = Array.from(
-    container.querySelectorAll(".item")
-  );
+/* ===== NGUỒN DỮ LIỆU SẢN PHẨM ===== */
+const NEW_PRODUCTS_FILE = "products-new.html";
+const PRODUCT_FILES = [
+  "products-rolife.html",
+  "products-tonecheer.html",
+  "products-cutebee.html",
+  "products-cuteroom.html",
+  "products-greathouse.html",
+  "products-jifangshiguang.html",
+  "products-aslowsnail.html",
+  "products-fifijoy.html",
+  "products-hongda.html",
+  "products-rokr.html",
+  "products-ytop.html",
+  "products-tianyu.html",
+  "products-qiaoyun.html",
+  "products-xinyue.html",
+  "products-maotiankong.html",
+  "products-zhiwo.html",
+  "products-other.html"
+];
 
-  items.sort((a, b) => {
+const VIETNAMESE_ALPHABET = ["A", "Ă", "Â", "B", "C", "D", "Đ", "E", "Ê", "G", "H", "I", "K", "L", "M", "N", "O", "Ô", "Ơ", "P", "Q", "R", "S", "T", "U", "Ư", "V", "X", "Y"];
+let allAlphabetItems = [];
+let alphabetLoaded = false;
+let activeLetter = null;
+let activeSearchQuery = "";
 
-    const inputA = a.querySelector("input");
-    const inputB = b.querySelector("input");
-
-    const nameA = (
-      inputA?.dataset.name ||
-      a.textContent
-    ).trim();
-
-    const nameB = (
-      inputB?.dataset.name ||
-      b.textContent
-    ).trim();
-
-    return nameA.localeCompare(nameB, "vi");
-  });
-
-  items.forEach(item => {
-    container.appendChild(item);
-  });
+function getProductName(item) {
+  const input = item.querySelector("input");
+  return (input?.dataset.name || item.textContent || "").trim();
 }
 
-/* ===== LOAD CONTENT CHO TAB ===== */
-async function loadTab(tabId) {
-  const container = document.getElementById(tabId);
-  if (!container) return;
+function getInitial(name) {
+  const first = (name || "").trim().charAt(0).toLocaleUpperCase("vi-VN");
+  if (!first) return "";
+  // Gom các nguyên âm có dấu về chữ cái gốc để khách dễ tìm: Á/Ă/Â -> A, Ế/Ê -> E...
+  if (first === "Đ") return "Đ";
+  const normalized = first.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  return normalized;
+}
 
-  // nếu đã load rồi thì không load lại
-  if (container.dataset.loaded === "true") return;
+function sortProducts(container) {
+  const items = Array.from(container.querySelectorAll(".item"));
+  items.sort((a, b) => getProductName(a).localeCompare(getProductName(b), "vi"));
+  items.forEach(item => container.appendChild(item));
+}
 
-  const file = TAB_FILES[tabId];
-  if (!file) return;
+async function fetchProductItems(file) {
+  const res = await fetch(file, { cache: "no-store" });
+  if (!res.ok) throw new Error(`Không tải được ${file}`);
+  const html = await res.text();
+  const temp = document.createElement("div");
+  temp.innerHTML = html;
+  return Array.from(temp.querySelectorAll(".item"));
+}
 
+async function loadNewProducts() {
+  const container = document.getElementById("new");
+  if (!container || container.dataset.loaded === "true") return;
   try {
-    const res = await fetch(file, { cache: "no-store" });
-    if (!res.ok) throw new Error("Load failed");
-
-    const html = await res.text();
-    container.innerHTML = html;
-    /* Sắp xếp ABC */
+    const items = await fetchProductItems(NEW_PRODUCTS_FILE);
+    items.forEach(item => container.appendChild(item));
     sortProducts(container);
     container.dataset.loaded = "true";
   } catch (err) {
-    container.innerHTML =
-      "<p style='color:#999;'>⚠️ Không tải được sản phẩm</p>";
+    container.innerHTML = "<p style='color:#999;'>⚠️ Không tải được sản phẩm mới. Vui lòng thử tải lại trang.</p>";
   }
 }
 
-/* ===== TAB SWITCH ===== */
-function showTab(id, btn) {
-  document.querySelectorAll(".products")
-    .forEach(p => p.classList.remove("active"));
+async function loadAlphabetProducts() {
+  const container = document.getElementById("alphabet");
+  const select = document.getElementById("brandSelect");
+  if (!container || alphabetLoaded) return;
+  container.innerHTML = "<p style='color:#999;'>Đang tải danh sách mô hình... 🐰</p>";
 
-  document.querySelectorAll(".tabs button")
-    .forEach(b => b.classList.remove("active"));
+  const results = await Promise.allSettled(PRODUCT_FILES.map(fetchProductItems));
+  allAlphabetItems = [];
+  results.forEach((result, index) => {
+    if (result.status === "fulfilled") {
+      allAlphabetItems.push(...result.value);
+    } else {
+      console.warn("Không tải được file sản phẩm:", PRODUCT_FILES[index], result.reason);
+    }
+  });
 
-  const tab = document.getElementById(id);
-  if (!tab) return;
+  container.innerHTML = "";
+  const available = new Set();
+  allAlphabetItems.forEach(item => {
+    const name = getProductName(item);
+    item.dataset.initial = getInitial(name);
+    available.add(item.dataset.initial);
+    container.appendChild(item);
+  });
+  sortProducts(container);
 
-  tab.classList.add("active");
-  btn.classList.add("active");
+  // Chỉ hiện chữ cái có sản phẩm, theo thứ tự bảng chữ cái tiếng Việt.
+  const letters = VIETNAMESE_ALPHABET.filter(letter => available.has(letter));
+  select.innerHTML = '<option value="new">🔥 Mẫu mới</option>';
+  const group = document.createElement("optgroup");
+  group.label = "Tìm theo chữ cái đầu";
+  letters.forEach(letter => {
+    const option = document.createElement("option");
+    option.value = `letter-${letter}`;
+    option.textContent = letter;
+    group.appendChild(option);
+  });
+  select.appendChild(group);
+  select.insertAdjacentHTML("beforeend", '<option value="all">📚 Tất cả sản phẩm</option>');
 
-  // load sản phẩm
-  loadTab(id);
-
-  // 🔥 THÊM Ở ĐÂY (quan trọng)
-  setTimeout(updatePrices, 200);
+  alphabetLoaded = true;
+  container.dataset.loaded = "true";
+  filterAlphabetProducts("all");
 }
 
-/* ===== TOTAL PRICE ===== */
+function normalizeSearchText(value) {
+  return (value || "")
+    .toLocaleLowerCase("vi-VN")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .trim();
+}
+
+function applyProductFilters() {
+  const container = document.getElementById("alphabet");
+  const status = document.getElementById("searchStatus");
+  if (!container) return;
+  const query = normalizeSearchText(activeSearchQuery);
+  const visibleItems = [];
+
+  allAlphabetItems.forEach(item => {
+    const name = getProductName(item);
+    const matchesLetter = !activeLetter || item.dataset.initial === activeLetter;
+    const matchesQuery = !query || normalizeSearchText(name).includes(query);
+    const visible = matchesLetter && matchesQuery;
+    item.style.display = visible ? "" : "none";
+    if (visible) visibleItems.push(item);
+  });
+
+  if (status) {
+    if (activeSearchQuery) {
+      status.textContent = visibleItems.length
+        ? `🔎 Tìm thấy ${visibleItems.length} sản phẩm phù hợp.`
+        : "Không tìm thấy mô hình phù hợp. Bạn thử từ khóa khác nhé!";
+    } else if (activeLetter) {
+      status.textContent = `Đang hiển thị ${visibleItems.length} mô hình bắt đầu bằng chữ ${activeLetter}.`;
+    } else {
+      status.textContent = "Nhập tên mô hình rồi nhấn Tìm kiếm. Có thể tìm không dấu.";
+    }
+  }
+}
+
+function filterAlphabetProducts(selection) {
+  activeLetter = selection.startsWith("letter-") ? selection.slice(7) : null;
+  activeSearchQuery = "";
+  const searchInput = document.getElementById("productSearch");
+  if (searchInput) searchInput.value = "";
+  applyProductFilters();
+}
+
+function searchProducts() {
+  const input = document.getElementById("productSearch");
+  activeSearchQuery = input?.value || "";
+  activeLetter = null;
+  const select = document.getElementById("brandSelect");
+  if (select) select.value = "all";
+  document.querySelectorAll(".products").forEach(div => div.classList.remove("active"));
+  document.getElementById("alphabet")?.classList.add("active");
+  loadAlphabetProducts().then(() => applyProductFilters());
+}
+
+function showBrand() {
+  const selected = document.getElementById("brandSelect").value;
+  document.querySelectorAll(".products").forEach(div => div.classList.remove("active"));
+  if (selected === "new") {
+    document.getElementById("new")?.classList.add("active");
+    loadNewProducts();
+    return;
+  }
+  document.getElementById("alphabet")?.classList.add("active");
+  loadAlphabetProducts().then(() => filterAlphabetProducts(selected));
+}
+
 function updateTotal() {
   let total = 0;
-  document
-    .querySelectorAll('input[type="checkbox"]:checked')
-    .forEach(cb => {
-      total += Number(cb.dataset.price || 0);
-    });
-
+  document.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+    total += Number(cb.dataset.price || 0);
+  });
   const totalEl = document.getElementById("total");
-  if (totalEl) {
-    totalEl.innerText = total.toLocaleString("vi-VN");
-  }
+  if (totalEl) totalEl.innerText = total.toLocaleString("vi-VN");
 }
 
-/* ===== BEFORE SUBMIT ===== */
 function beforeSend() {
-  const checked = document.querySelectorAll(
-    'input[type="checkbox"]:checked'
-  );
-
+  const checked = document.querySelectorAll('input[type="checkbox"]:checked');
   if (checked.length === 0) {
     alert("Bạn chưa chọn sản phẩm nào 💛");
     return false;
   }
-
-  let list = [];
+  const list = [];
   let total = 0;
-
   checked.forEach(cb => {
-    list.push(cb.dataset.name);
+    list.push(cb.dataset.name || cb.closest(".item")?.textContent.trim() || "Sản phẩm");
     total += Number(cb.dataset.price || 0);
   });
-
   const productsInput = document.getElementById("products");
   const totalInput = document.getElementById("totalInput");
-
   if (productsInput) productsInput.value = list.join("\n");
   if (totalInput) totalInput.value = total.toLocaleString("vi-VN") + "đ";
-
   return true;
 }
-function showBrand() {
-  const selected =
-      document.getElementById("brandSelect").value;
 
-  document.querySelectorAll(".products")
-    .forEach(div => div.classList.remove("active"));
-
-  const container =
-      document.getElementById(selected);
-
-  if (!container) return;
-
-  container.classList.add("active");
-
-  loadTab(selected);
-}
-/* ===== EVENT ===== */
-document.addEventListener("change", updateTotal);
-
-/* ===== AUTO LOAD TAB ĐẦU ===== */
-document.addEventListener("DOMContentLoaded", () => {
-  loadTab("new");
+document.addEventListener("change", event => {
+  if (event.target.matches('input[type="checkbox"]')) updateTotal();
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  loadNewProducts();
+  // Nạp danh mục ABC ở nền để các chữ cái được tạo theo dữ liệu thực tế.
+  loadAlphabetProducts().catch(err => console.error("Lỗi tải danh mục ABC:", err));
+  document.getElementById("searchButton")?.addEventListener("click", searchProducts);
+  document.getElementById("productSearch")?.addEventListener("keydown", event => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      searchProducts();
+    }
+  });
+});
