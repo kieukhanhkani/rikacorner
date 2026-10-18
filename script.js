@@ -58,7 +58,18 @@ async function fetchProductItems(file) {
   const html = await res.text();
   const temp = document.createElement("div");
   temp.innerHTML = html;
-  return Array.from(temp.querySelectorAll(".item"));
+  const items = Array.from(temp.querySelectorAll(".item"));
+
+  // Gắn tên hãng theo file nguồn để tìm được hãng kể cả khi data-name
+  // chỉ lưu tên mô hình, không lưu tên nhà sản xuất.
+  const brandFromFile = file
+    .replace(/^products-/, "")
+    .replace(/\.html$/i, "")
+    .replace(/-/g, " ");
+  items.forEach(item => {
+    item.dataset.brand = brandFromFile;
+  });
+  return items;
 }
 
 async function loadNewProducts() {
@@ -145,6 +156,18 @@ function normalizeSearchText(value) {
     .trim();
 }
 
+function getProductSearchText(item) {
+  const input = item.querySelector("input");
+  const label = item.querySelector("label");
+  // Tìm cả tên mô hình, tên hiển thị đầy đủ và tên hãng từ file nguồn.
+  return [
+    input?.dataset.name,
+    label?.textContent,
+    item.textContent,
+    item.dataset.brand
+  ].filter(Boolean).join(" ");
+}
+
 function applyProductFilters() {
   const container = document.getElementById("alphabet");
   const status = document.getElementById("searchStatus");
@@ -153,9 +176,9 @@ function applyProductFilters() {
   const visibleItems = [];
 
   allAlphabetItems.forEach(item => {
-    const name = getProductName(item);
+    const searchText = getProductSearchText(item);
     const matchesLetter = !activeLetter || item.dataset.initial === activeLetter;
-    const matchesQuery = !query || normalizeSearchText(name).includes(query);
+    const matchesQuery = !query || normalizeSearchText(searchText).includes(query);
     const visible = matchesLetter && matchesQuery;
     item.style.display = visible ? "" : "none";
     if (visible) visibleItems.push(item);
