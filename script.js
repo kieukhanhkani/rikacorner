@@ -1,4 +1,3 @@
-/* RIKA_TUTORIAL_FIX_VERSION: 2026-11-19-v2 */
 /* ===== NGUỒN DỮ LIỆU SẢN PHẨM ===== */
 const NEW_PRODUCTS_FILE = "products-new.html";
 const PRODUCT_FILES = [
@@ -341,13 +340,13 @@ function closeTutorialModal() {
   if (player) { player.innerHTML = ''; player.hidden = true; }
 }
 
-function openTutorialModal(item) {
-  const links = getTutorialLinks(item);
+function openTutorialModal(item, linksOverride = null, modalHeading = 'Hướng dẫn lắp ráp', autoPlayFirst = false) {
+  const links = Array.isArray(linksOverride) ? linksOverride : getTutorialLinks(item);
   if (!links.length) return;
   const modal = ensureTutorialModal();
   const name = item.querySelector('.product-name')?.textContent?.trim()
     || item.querySelector('input')?.dataset.name || 'Sản phẩm';
-  modal.querySelector('#tutorialModalTitle').textContent = `Hướng dẫn lắp ráp: ${name}`;
+  modal.querySelector('#tutorialModalTitle').textContent = `${modalHeading}: ${name}`;
   const list = modal.querySelector('#tutorialList');
   const player = modal.querySelector('#tutorialPlayer');
   const hint = modal.querySelector('#tutorialHint');
@@ -360,7 +359,7 @@ function openTutorialModal(item) {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'tutorial-part';
-    button.textContent = (link.textContent || '').trim() || 'Video hướng dẫn';
+    button.textContent = (link.textContent || '').trim() || `Video ${index + 1}`;
     button.addEventListener('click', () => {
       list.querySelectorAll('.tutorial-part').forEach(el => el.classList.toggle('active', el === button));
       const embedUrl = getYouTubeEmbedUrl(link.href);
@@ -384,10 +383,27 @@ function openTutorialModal(item) {
     list.appendChild(button);
   });
   modal.classList.add('open');
+  if (autoPlayFirst) {
+    const firstButton = list.querySelector('.tutorial-part');
+    if (firstButton) firstButton.click();
+  }
 }
 
 function setupTutorialButtons(root = document) {
   root.querySelectorAll('.item').forEach(item => {
+    // Giới thiệu: phát trong modal thay vì mở tab YouTube.
+    const introAnchor = item.querySelector('.intro-btn');
+    if (introAnchor && introAnchor.dataset.modalReady !== 'true') {
+      introAnchor.dataset.modalReady = 'true';
+      introAnchor.addEventListener('click', event => {
+        const href = (introAnchor.getAttribute('href') || '').trim();
+        if (!/^https?:\/\//i.test(href) || !getYouTubeEmbedUrl(href)) return;
+        event.preventDefault();
+        event.stopPropagation();
+        openTutorialModal(item, [introAnchor], 'Giới thiệu', true);
+      });
+    }
+
     const links = getTutorialLinks(item);
     // Xóa nút placeholder cũ do phiên bản product.py trước tạo ra.
     item.querySelectorAll('a.tutorial-btn:not([data-tutorial-ready])').forEach(btn => btn.remove());
@@ -399,10 +415,6 @@ function setupTutorialButtons(root = document) {
     button.className = 'video-btn tutorial-btn';
     button.dataset.tutorialReady = 'true';
     button.textContent = `🔧 Hướng dẫn lắp ráp (${links.length})`;
-    // Ép nút hiển thị: một quy tắc CSS hiện tại đang đặt display:none cho .tutorial-btn.
-    button.style.setProperty('display', 'inline-flex', 'important');
-    button.style.setProperty('visibility', 'visible', 'important');
-    button.style.setProperty('opacity', '1', 'important');
     button.addEventListener('click', event => {
       event.preventDefault();
       event.stopPropagation();
