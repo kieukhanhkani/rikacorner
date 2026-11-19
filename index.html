@@ -335,6 +335,58 @@ button.submit:hover {
   }
 }
 
+
+/* ===== POPUP DANH SACH VIDEO HUONG DAN ===== */
+.tutorial-btn {
+  color: #21834b;
+  background: #edfff3;
+  border: 1px solid #bce8cb;
+}
+.tutorial-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0,0,0,.65);
+  z-index: 10001;
+}
+.tutorial-modal.open { display: flex; }
+.tutorial-dialog {
+  width: min(680px, 100%);
+  max-height: 90vh;
+  overflow: auto;
+  background: #fff;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 12px 36px rgba(0,0,0,.28);
+}
+.tutorial-modal-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.tutorial-modal-title { flex: 1; font-weight: 700; color: #d94f78; }
+.tutorial-close {
+  border: 0; border-radius: 50%; width: 34px; height: 34px;
+  background: #fff0f4; color: #b83f65; cursor: pointer; font-size: 20px;
+}
+.tutorial-list { display: grid; gap: 8px; margin: 12px 0; }
+.tutorial-part {
+  width: 100%; text-align: left; padding: 11px 12px;
+  border: 1px solid #f2c2cc; border-radius: 10px;
+  background: #fff8fa; color: #633; cursor: pointer; font: inherit;
+}
+.tutorial-part.active { border-color: #ff8fab; background: #fff0f4; font-weight: 700; }
+.tutorial-player { width: 100%; aspect-ratio: 16 / 9; background: #111; border-radius: 12px; overflow: hidden; }
+.tutorial-player iframe { width: 100%; height: 100%; border: 0; }
+.tutorial-empty { color: #999; font-size: 13px; }
+@media (max-width: 480px) {
+  .tutorial-dialog { padding: 14px; }
+}
+
 </style>
 </head>
 
