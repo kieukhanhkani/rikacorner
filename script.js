@@ -78,6 +78,7 @@ async function loadNewProducts() {
   try {
     const items = await fetchProductItems(NEW_PRODUCTS_FILE);
     items.forEach(item => container.appendChild(item));
+    setupTutorialButtons(container);
     sortProducts(container);
     container.dataset.loaded = "true";
   } catch (err) {
@@ -109,6 +110,7 @@ async function loadAlphabetProducts() {
     available.add(item.dataset.initial);
     container.appendChild(item);
   });
+  setupTutorialButtons(container);
   sortProducts(container);
 
   // Chỉ hiện chữ cái có sản phẩm, theo thứ tự bảng chữ cái tiếng Việt.
@@ -274,6 +276,139 @@ function beforeSend() {
 document.addEventListener("change", event => {
   if (event.target.matches('input[type="checkbox"]')) updateTotal();
 });
+
+
+
+/* ===== HUONG DAN LAP RAP: TU DEM LINK DUOC DAN TRONG HTML =====
+   Trong moi .item, dan cac link vao .tutorial-links.
+   Moi link la mot the <a class="tutorial-link" href="...">Video hướng dẫn</a>.
+*/
+function getTutorialLinks(item) {
+  const holder = item.querySelector('.tutorial-links');
+  if (!holder) return [];
+  return Array.from(holder.querySelectorAll('a.tutorial-link, a[href]')).filter(a => {
+    const href = (a.getAttribute('href') || '').trim();
+    return /^https?:\/\//i.test(href);
+  });
+}
+
+function getYouTubeEmbedUrl(rawUrl) {
+  try {
+    const url = new URL(rawUrl);
+    let id = '';
+    if (url.hostname.includes('youtu.be')) id = url.pathname.split('/').filter(Boolean)[0] || '';
+    else if (url.hostname.includes('youtube.com')) {
+      if (url.pathname === '/watch') id = url.searchParams.get('v') || '';
+      else if (url.pathname.startsWith('/embed/')) id = url.pathname.split('/')[2] || '';
+      else if (url.pathname.startsWith('/shorts/')) id = url.pathname.split('/')[2] || '';
+    }
+    return id ? `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&rel=0` : '';
+  } catch (_) { return ''; }
+}
+
+function ensureTutorialModal() {
+  let modal = document.getElementById('tutorialModal');
+  if (modal) return modal;
+  modal = document.createElement('div');
+  modal.id = 'tutorialModal';
+  modal.className = 'tutorial-modal';
+  modal.innerHTML = `
+    <div class="tutorial-dialog" role="dialog" aria-modal="true" aria-labelledby="tutorialModalTitle">
+      <div class="tutorial-modal-head">
+        <div class="tutorial-modal-title" id="tutorialModalTitle">Hướng dẫn lắp ráp</div>
+        <button type="button" class="tutorial-close" aria-label="Đóng">×</button>
+      </div>
+      <div class="tutorial-list" id="tutorialList"></div>
+      <div class="tutorial-player" id="tutorialPlayer" hidden></div>
+      <p class="tutorial-empty" id="tutorialHint">Chọn video để xem hướng dẫn lắp ráp.</p>
+    </div>`;
+  document.body.appendChild(modal);
+  modal.addEventListener('click', event => {
+    if (event.target === modal || event.target.closest('.tutorial-close')) closeTutorialModal();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeTutorialModal();
+  });
+  return modal;
+}
+
+function closeTutorialModal() {
+  const modal = document.getElementById('tutorialModal');
+  if (!modal) return;
+  modal.classList.remove('open');
+  const player = modal.querySelector('#tutorialPlayer');
+  if (player) { player.innerHTML = ''; player.hidden = true; }
+}
+
+function openTutorialModal(item) {
+  const links = getTutorialLinks(item);
+  if (!links.length) return;
+  const modal = ensureTutorialModal();
+  const name = item.querySelector('.product-name')?.textContent?.trim()
+    || item.querySelector('input')?.dataset.name || 'Sản phẩm';
+  modal.querySelector('#tutorialModalTitle').textContent = `Hướng dẫn lắp ráp: ${name}`;
+  const list = modal.querySelector('#tutorialList');
+  const player = modal.querySelector('#tutorialPlayer');
+  const hint = modal.querySelector('#tutorialHint');
+  list.innerHTML = '';
+  player.innerHTML = '';
+  player.hidden = true;
+  hint.hidden = false;
+
+  links.forEach((link, index) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'tutorial-part';
+    button.textContent = (link.textContent || '').trim() || 'Video hướng dẫn';
+    button.addEventListener('click', () => {
+      list.querySelectorAll('.tutorial-part').forEach(el => el.classList.toggle('active', el === button));
+      const embedUrl = getYouTubeEmbedUrl(link.href);
+      player.innerHTML = '';
+      if (embedUrl) {
+        const iframe = document.createElement('iframe');
+        iframe.src = embedUrl;
+        iframe.title = button.textContent;
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        iframe.allowFullscreen = true;
+        player.appendChild(iframe);
+        player.hidden = false;
+        hint.hidden = true;
+      } else {
+        player.hidden = true;
+        hint.hidden = false;
+        hint.textContent = 'Link này không phải YouTube. Video sẽ được mở trong tab mới.';
+        window.open(link.href, '_blank', 'noopener');
+      }
+    });
+    list.appendChild(button);
+  });
+  modal.classList.add('open');
+}
+
+function setupTutorialButtons(root = document) {
+  root.querySelectorAll('.item').forEach(item => {
+    const links = getTutorialLinks(item);
+    // Xóa nút placeholder cũ do phiên bản product.py trước tạo ra.
+    item.querySelectorAll('a.tutorial-btn:not([data-tutorial-ready])').forEach(btn => btn.remove());
+    item.querySelectorAll('button.tutorial-btn').forEach(btn => btn.remove());
+    if (!links.length) return;
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'video-btn tutorial-btn';
+    button.dataset.tutorialReady = 'true';
+    button.textContent = `🔧 Hướng dẫn lắp ráp (${links.length})`;
+    button.addEventListener('click', event => {
+      event.preventDefault();
+      event.stopPropagation();
+      openTutorialModal(item);
+    });
+    const intro = item.querySelector('.intro-btn');
+    if (intro?.parentNode) intro.insertAdjacentElement('afterend', button);
+    else (item.querySelector('.left') || item).appendChild(button);
+  });
+}
+
 
 document.addEventListener("DOMContentLoaded", () => {
   loadNewProducts();
