@@ -1,3 +1,4 @@
+/* RIKA_TUTORIAL_FIX_VERSION: 2026-11-19-v2 */
 /* ===== NGUỒN DỮ LIỆU SẢN PHẨM ===== */
 const NEW_PRODUCTS_FILE = "products-new.html";
 const PRODUCT_FILES = [
