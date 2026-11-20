@@ -391,7 +391,6 @@ function openTutorialModal(item, linksOverride = null, modalHeading = 'Hướng 
 
 function setupTutorialButtons(root = document) {
   root.querySelectorAll('.item').forEach(item => {
-    // Giới thiệu: phát trong modal thay vì mở tab YouTube.
     const introAnchor = item.querySelector('.intro-btn');
     if (introAnchor && introAnchor.dataset.modalReady !== 'true') {
       introAnchor.dataset.modalReady = 'true';
@@ -401,6 +400,20 @@ function setupTutorialButtons(root = document) {
         event.preventDefault();
         event.stopPropagation();
         openTutorialModal(item, [introAnchor], 'Giới thiệu', true);
+      });
+    }
+
+    // Nếu Chia sẻ video trỏ đến YouTube thì phát trong website.
+    // Nếu trỏ đến form/trang nhận video khách hàng thì vẫn mở liên kết như cũ.
+    const feedbackAnchor = item.querySelector('.feedback-btn');
+    if (feedbackAnchor && feedbackAnchor.dataset.modalReady !== 'true') {
+      feedbackAnchor.dataset.modalReady = 'true';
+      feedbackAnchor.addEventListener('click', event => {
+        const href = (feedbackAnchor.getAttribute('href') || '').trim();
+        if (!/^https?:\/\//i.test(href) || !getYouTubeEmbedUrl(href)) return;
+        event.preventDefault();
+        event.stopPropagation();
+        openTutorialModal(item, [feedbackAnchor], 'Video chia sẻ', true);
       });
     }
 
