@@ -428,6 +428,12 @@ function setupTutorialButtons(root = document) {
     button.className = 'video-btn tutorial-btn';
     button.dataset.tutorialReady = 'true';
     button.textContent = `🔧 Hướng dẫn lắp ráp (${links.length})`;
+
+    // CSS hiện tại đang ẩn .tutorial-btn, nên ép nút hiển thị.
+    button.style.setProperty('display', 'inline-flex', 'important');
+    button.style.setProperty('visibility', 'visible', 'important');
+    button.style.setProperty('opacity', '1', 'important');
+
     button.addEventListener('click', event => {
       event.preventDefault();
       event.stopPropagation();
