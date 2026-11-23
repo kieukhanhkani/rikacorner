@@ -279,6 +279,71 @@ button.submit:hover {
 }
 .search-row button:hover { background: #ff6f91; }
 #searchStatus { margin: 0 2px 10px; color: #a66; font-size: 13px; }
+
+/* ===== FIX GIAO DIEN DANH SACH SAN PHAM ===== */
+.item {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+.item > .left {
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 6px;
+  row-gap: 5px;
+}
+.item > .left > * {
+  max-width: 100%;
+}
+.item > .left input[type="checkbox"] {
+  flex: 0 0 auto;
+  margin: 0 2px 0 4px;
+}
+.item .price {
+  align-self: center;
+  justify-self: end;
+  padding-left: 8px;
+}
+.item .tutorial-btn {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 4px 9px;
+  margin: 0 2px;
+  border: 1px solid #ffb6c8;
+  border-radius: 7px;
+  background: #fff0f4;
+  color: #d94f78;
+  font: 600 13px "Segoe UI", Arial, sans-serif;
+  line-height: 1.35;
+  white-space: nowrap;
+  cursor: pointer;
+  vertical-align: middle;
+}
+.item .tutorial-btn:hover {
+  background: #ffe0e8;
+  border-color: #ff8fab;
+}
+.item .video-btn {
+  display: inline-block;
+  white-space: normal;
+  line-height: 1.5;
+}
+@media (max-width: 520px) {
+  .item {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 5px;
+  }
+  .item > .left {
+    column-gap: 5px;
+  }
+  .item .price {
+    font-size: 13px;
+    padding-left: 4px;
+  }
+}
+
 </style>
 </head>
 
