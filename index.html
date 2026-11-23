@@ -280,68 +280,111 @@ button.submit:hover {
 .search-row button:hover { background: #ff6f91; }
 #searchStatus { margin: 0 2px 10px; color: #a66; font-size: 13px; }
 
-/* ===== FIX GIAO DIEN DANH SACH SAN PHAM ===== */
-.item {
-  grid-template-columns: minmax(0, 1fr) auto;
-}
-.item > .left {
-  min-width: 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  column-gap: 6px;
-  row-gap: 5px;
-}
-.item > .left > * {
-  max-width: 100%;
-}
-.item > .left input[type="checkbox"] {
-  flex: 0 0 auto;
-  margin: 0 2px 0 4px;
-}
-.item .price {
-  align-self: center;
-  justify-self: end;
-  padding-left: 8px;
-}
-.item .tutorial-btn {
-  display: inline-flex !important;
+/* ===== VIDEO SẢN PHẨM: GIỚI THIỆU, HƯỚNG DẪN & CHIA SẺ VIDEO ===== */
+.video-btn {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  padding: 4px 9px;
-  margin: 0 2px;
-  border: 1px solid #ffb6c8;
-  border-radius: 7px;
-  background: #fff0f4;
-  color: #d94f78;
-  font: 600 13px "Segoe UI", Arial, sans-serif;
-  line-height: 1.35;
+  gap: 4px;
+  margin: 4px 0 4px 6px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
   white-space: nowrap;
-  cursor: pointer;
   vertical-align: middle;
+  cursor: pointer;
 }
-.item .tutorial-btn:hover {
-  background: #ffe0e8;
-  border-color: #ff8fab;
+
+.video-btn[href=""],
+.video-btn:not([href]) {
+  display: none !important;
 }
-.item .video-btn {
-  display: inline-block;
-  white-space: normal;
-  line-height: 1.5;
+
+.video-btn.intro-btn {
+  color: #d93636;
+  background: #fff0f0;
+  border: 1px solid #ffcaca;
 }
-@media (max-width: 520px) {
-  .item {
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 5px;
+
+.video-btn.tutorial-btn {
+  color: #21834b;
+  background: #edfff3;
+  border: 1px solid #bce8cb;
+}
+
+/* ===== NÚT CHIA SẺ VIDEO / FEEDBACK KHÁCH HÀNG ===== */
+.video-btn.feedback-btn {
+  color: #9b4c9d;
+  background: #fbf0ff;
+  border: 1px solid #e8c5ef;
+}
+
+.video-btn:hover {
+  filter: brightness(0.97);
+  text-decoration: none;
+}
+
+@media (max-width: 480px) {
+  .video-btn {
+    margin-left: 4px;
+    padding: 5px 7px;
+    font-size: 11px;
   }
-  .item > .left {
-    column-gap: 5px;
-  }
-  .item .price {
-    font-size: 13px;
-    padding-left: 4px;
-  }
+}
+
+
+/* ===== POPUP DANH SACH VIDEO HUONG DAN ===== */
+.tutorial-btn {
+  color: #21834b;
+  background: #edfff3;
+  border: 1px solid #bce8cb;
+}
+.tutorial-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0,0,0,.65);
+  z-index: 10001;
+}
+.tutorial-modal.open { display: flex; }
+.tutorial-dialog {
+  width: min(680px, 100%);
+  max-height: 90vh;
+  overflow: auto;
+  background: #fff;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 12px 36px rgba(0,0,0,.28);
+}
+.tutorial-modal-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.tutorial-modal-title { flex: 1; font-weight: 700; color: #d94f78; }
+.tutorial-close {
+  border: 0; border-radius: 50%; width: 34px; height: 34px;
+  background: #fff0f4; color: #b83f65; cursor: pointer; font-size: 20px;
+}
+.tutorial-list { display: grid; gap: 8px; margin: 12px 0; }
+.tutorial-part {
+  width: 100%; text-align: left; padding: 11px 12px;
+  border: 1px solid #f2c2cc; border-radius: 10px;
+  background: #fff8fa; color: #633; cursor: pointer; font: inherit;
+}
+.tutorial-part.active { border-color: #ff8fab; background: #fff0f4; font-weight: 700; }
+.tutorial-player { width: 100%; aspect-ratio: 16 / 9; background: #111; border-radius: 12px; overflow: hidden; }
+.tutorial-player iframe { width: 100%; height: 100%; border: 0; }
+.tutorial-empty { color: #999; font-size: 13px; }
+@media (max-width: 480px) {
+  .tutorial-dialog { padding: 14px; }
 }
 
 </style>
@@ -480,79 +523,6 @@ function closeImage() {
 <div id="imageModal" class="closeable" onclick="closeImage()">
   <img id="modalImg">
 </div>
-
-
-<style>
-/* ===== RIKA CORNER SOCIAL FOLLOW ===== */
-.rika-social {
-  max-width: 680px;
-  margin: 28px auto 24px;
-  padding: 22px 18px;
-  text-align: center;
-  background: #fff;
-  border: 1px solid #ffe0e8;
-  border-radius: 18px;
-  box-shadow: 0 8px 22px rgba(255, 111, 145, .09);
-}
-.rika-social h3 {
-  margin: 0 0 8px;
-  color: #ff6f91;
-  font-size: 20px;
-}
-.rika-social p {
-  margin: 0 0 16px;
-  color: #777;
-  font-size: 14px;
-}
-.rika-social-links {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.rika-social-links a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-width: 150px;
-  padding: 11px 16px;
-  border-radius: 999px;
-  color: #fff;
-  font-weight: 700;
-  font-size: 14px;
-  text-decoration: none;
-  transition: transform .18s ease, box-shadow .18s ease;
-  box-shadow: 0 4px 10px rgba(0,0,0,.10);
-}
-.rika-social-links a:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 7px 15px rgba(0,0,0,.15);
-}
-.rika-social-links .youtube { background: #e62117; }
-.rika-social-links .shopee { background: #ee4d2d; }
-.rika-social-links .facebook { background: #1877f2; }
-@media (max-width: 480px) {
-  .rika-social-links { flex-direction: column; }
-  .rika-social-links a { width: 100%; box-sizing: border-box; }
-}
-</style>
-
-<section class="rika-social" aria-label="Theo dõi Rika Corner">
-  <h3>💗 Kết nối với Rika Corner</h3>
-  <p>Theo dõi chúng mình để cập nhật mô hình DIY mới và ưu đãi mới nhất nhé!</p>
-  <div class="rika-social-links">
-    <a class="youtube" href="https://www.youtube.com/@rikacornerart" target="_blank" rel="noopener noreferrer">
-      ▶ Theo dõi YouTube
-    </a>
-    <a class="shopee" href="https://shopee.vn/rika_corner" target="_blank" rel="noopener noreferrer">
-      🛍 Ghé Shopee
-    </a>
-    <a class="facebook" href="https://www.facebook.com/RikaCornerCute" target="_blank" rel="noopener noreferrer">
-      f Theo dõi Fanpage
-    </a>
-  </div>
-</section>
 
 </body>
 </html>
